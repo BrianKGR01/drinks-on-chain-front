@@ -1,0 +1,49 @@
+.wrap {
+  position: fixed;
+  left: 50%;
+  bottom: 9.5rem;
+  z-index: 5;
+  transform: translateX(-50%) translateY(0.6rem);
+  opacity: 0;
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+  pointer-events: none;
+  text-align: center;
+}
+.visible { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+@media (max-width: 767px) { .wrap { bottom: 6.5rem; } }
+
+.cta {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-display);
+  color: var(--accent);
+}
+.name {
+  font-size: 1.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  padding-left: 0.3em;
+  line-height: 1.2;
+}
+.label {
+  font-size: 0.75rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  padding-left: 0.4em;
+  position: relative;
+  padding-bottom: 0.6em;
+  margin-bottom: 0.4em;
+}
+.label::after {
+  content: "";
+  position: absolute;
+  left: 5%; right: 5%; bottom: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.5s ease-out;
+}
+.cta:hover .label::after,
+.cta:focus-visible .label::after { transform: scaleX(1); }

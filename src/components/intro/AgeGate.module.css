@@ -1,0 +1,176 @@
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: transparent;
+}
+.intro.leaving { pointer-events: none; }
+
+/* Logo ------------------------------------------------------------- */
+.logo {
+  position: absolute;
+  top: calc(20% - 3rem);
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 2s ease 0.2s;
+  will-change: opacity;
+}
+.in .logo { opacity: 1; }
+.leaving .logo { opacity: 0; transition: opacity 0.6s ease 0.2s; }
+
+/* Statement -------------------------------------------------------- */
+.content {
+  position: absolute;
+  top: 25%;
+  bottom: 25%;
+  left: 25%;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 1.6vw;
+  letter-spacing: 0.25em;
+  line-height: 1.75;
+  text-transform: uppercase;
+}
+@media (max-width: 767px) {
+  .content { font-size: 2.6vw; left: 10%; width: 80%; }
+}
+.contentInner { width: 100%; }
+.contentInner :global(.space) { display: inline-block; width: 0.55em; }
+.contentInner :global(.letter) {
+  opacity: 0;
+  transition: opacity 2s ease 0.2s;
+  will-change: opacity;
+}
+.in .contentInner :global(.letter) { opacity: 1; }
+.leaving .contentInner :global(.letter) {
+  opacity: 0;
+  transition: opacity 0.6s ease 0.2s;
+}
+
+/* Enter button ----------------------------------------------------- */
+.enter {
+  position: absolute;
+  bottom: 25%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  cursor: pointer;
+  text-transform: none;
+  overflow: visible;
+}
+.enter:focus-visible { outline: none; }
+.enter:focus-visible .label.black :global(.letter) { opacity: 1; }
+
+.label {
+  position: absolute;
+  left: -100px;
+  top: -30px;
+  width: 200px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 1.6vw;
+  letter-spacing: 0.25em;
+  display: block;
+  pointer-events: auto;
+}
+@media (max-width: 767px) { .label { font-size: 3.2vw; } }
+
+.label :global(.letter) {
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 0.45s;
+  will-change: opacity;
+}
+
+.red { color: var(--accent); }
+.in .red :global(.letter) {
+  opacity: 1;
+  transition-duration: 2s;
+  transition-delay: calc(2s + var(--i) * 0.08s);
+}
+.black :global(.letter) {
+  opacity: 0;
+  transition-delay: calc(var(--i) * 0.07s);
+}
+
+.in .enter:hover .red :global(.letter) {
+  opacity: 0;
+  transition-duration: 0.45s;
+  transition-delay: calc(var(--i) * 0.07s);
+}
+.in .enter:hover .black :global(.letter) {
+  opacity: 1;
+  transition-delay: calc(0.3s + var(--i) * 0.07s);
+}
+
+.leaving .label :global(.letter) {
+  opacity: 0 !important;
+  transition-duration: 0.6s !important;
+  transition-delay: calc(var(--i) * 0.08s) !important;
+}
+
+/* The thin "descend" glyph under the label ------------------------ */
+.icon { position: absolute; top: 35px; left: 0; }
+.bar1 {
+  position: absolute;
+  top: 0; left: 0;
+  width: 1px; height: 25px;
+  background: var(--accent);
+  transform-origin: 0 0;
+  transform: scaleY(0);
+  transition: transform 1s ease 2.5s, background-color 0.4s;
+}
+.bar2 {
+  position: absolute;
+  top: 25px; left: -3px;
+  width: 7px; height: 1px;
+  background: var(--accent);
+  transform-origin: 50% 50%;
+  transform: scaleX(0);
+  transition: transform 1s ease 3.3s, background-color 0.4s;
+}
+.in .bar1 { transform: scaleY(1); }
+.in .bar2 { transform: scaleX(1); }
+.in .enter:hover .bar1,
+.in .enter:hover .bar2 { background: var(--ink); }
+.leaving .bar1 { transform: scaleY(0); transition: transform 0.6s ease 0.4s; }
+.leaving .bar2 { transform: scaleX(0); transition: transform 0.6s ease 0s; }
+
+/* Bottom navigation ------------------------------------------------ */
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 3.125vw 4.6875% 3.125vw 5%;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 2s;
+}
+.in .nav { opacity: 1; }
+.leaving .nav { opacity: 0; transition: opacity 0.6s; }
+.langs { display: flex; margin-right: 2.5vw; }
+.langs button { margin-right: 1em; }
+
+@media (max-width: 767px) {
+  .nav {
+    background: var(--paper-2);
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 8.25%;
+    height: 3em;
+    font-size: 0.9375rem;
+  }
+}

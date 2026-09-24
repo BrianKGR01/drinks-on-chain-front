@@ -1,0 +1,166 @@
+.page { min-height: 100vh; overflow: hidden; }
+
+.content {
+  position: relative;
+  height: calc(100vh - 3.125rem);
+}
+@media (max-width: 767px) {
+  .content { height: auto; display: flex; flex-direction: column; padding-bottom: 4rem; }
+}
+
+.list {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  padding-left: 22.3958333333vw;
+  list-style: none;
+  margin: 0;
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.list::-webkit-scrollbar { display: none; }
+@media (max-width: 767px) { .list { display: none; } }
+
+.listCta {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  line-height: 1.5714;
+  margin: 0 0 1.1em;
+  opacity: 0.5;
+  transition: opacity 0.4s;
+  text-align: left;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8em;
+}
+.listCta::after {
+  content: "";
+  position: absolute;
+  right: 100%;
+  top: 0.625em;
+  width: 19.2708333333vw;
+  height: 1px;
+  margin-right: 3.25vw;
+  background: var(--accent);
+  transform: translateX(-100%);
+  transition: transform 0.625s var(--ease-in-out);
+}
+.listActive::after { transform: translateX(0); }
+.listActive, .listCta:hover { opacity: 1; }
+.listKind {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  width: 4.5em;
+  flex: none;
+}
+
+.packshot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  width: 47vh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 12vh;
+  pointer-events: none;
+  animation: fade 1s var(--ease-out);
+}
+@keyframes fade { from { opacity: 0; transform: translateX(-50%) translateY(0.5rem); } }
+.bottle { height: 64vh; width: auto; color: var(--ink); }
+@media (max-width: 767px) {
+  .packshot { position: static; transform: none; width: auto; height: 60vh; padding: 3rem 0 1rem; }
+  .bottle { height: 100%; }
+}
+
+.details {
+  position: fixed;
+  left: 63.0208333333vw;
+  bottom: 21vh;
+  max-width: 24rem;
+}
+@media (max-width: 767px) {
+  .details { position: static; text-align: center; padding: 0 1.5rem; max-width: none; }
+}
+.title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 3.125rem;
+  letter-spacing: 0.4em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  margin: 0;
+}
+@media (max-width: 767px) { .title { font-size: 1.71875rem; } }
+.entries {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.875;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+  margin: 1.625em 0 3.25em;
+}
+@media (max-width: 767px) { .entries { font-size: 0.78125rem; margin-bottom: 1em; } }
+
+.controls { display: flex; align-items: center; gap: 1.5rem; }
+@media (max-width: 767px) { .controls { justify-content: space-between; } }
+
+.discover {
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--accent);
+  position: relative;
+  padding-bottom: 0.8em;
+}
+.discover::after {
+  content: "";
+  position: absolute;
+  left: 5%; right: 5%; bottom: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.5s ease-out;
+}
+.discover:hover::after { transform: scaleX(1); }
+
+.arrow {
+  display: none;
+  width: 2.1875rem;
+  height: 2.1875rem;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.32);
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+}
+.left { transform: rotate(180deg); }
+@media (max-width: 767px) { .arrow { display: inline-flex; } }
+
+.notice {
+  position: fixed;
+  bottom: 3.125vw;
+  left: 3.125vw;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-style: italic;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  opacity: 0.7;
+}
+@media (max-width: 767px) { .notice { position: static; text-align: center; padding: 2rem 1.5rem; } }
