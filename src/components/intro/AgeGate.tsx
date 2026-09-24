@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { Logo } from "@/components/brand/Logo";
 import { LetterSplit } from "@/components/ui/LetterSplit";
+import { GlassBottleOrnament } from "@/components/intro/GlassBottleOrnament";
 import { VineOrnament } from "@/components/intro/VineOrnament";
 import { LANGS, UI } from "@/content/i18n";
 import { useExperience } from "@/store/experience";
@@ -29,8 +30,9 @@ export function AgeGate() {
   const [gone, setGone] = useState(() => useExperience.getState().entered);
 
   useEffect(() => {
-    const id = requestAnimationFrame(() => setShown(true));
-    return () => cancelAnimationFrame(id);
+    // A timer (not rAF) so the reveal also runs when the tab is throttled.
+    const id = window.setTimeout(() => setShown(true), 40);
+    return () => window.clearTimeout(id);
   }, []);
 
   const handleEnter = useCallback(() => {
@@ -50,10 +52,10 @@ export function AgeGate() {
       aria-label={t.ageGateAria}
     >
       <div className={`${styles.ornament} ${styles.ornamentTopLeft}`} aria-hidden="true">
-        <VineOrnament delay={0.2} />
+        <VineOrnament flip delay={0.2} />
       </div>
       <div className={`${styles.ornament} ${styles.ornamentBottomRight}`} aria-hidden="true">
-        <VineOrnament flip delay={0.8} />
+        <GlassBottleOrnament delay={0.8} />
       </div>
 
       <div className={styles.logo}>
