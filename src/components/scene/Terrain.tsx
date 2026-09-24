@@ -2,6 +2,8 @@
 
 import * as THREE from "three";
 import { useEffect, useMemo } from "react";
+import type { ThreeEvent } from "@react-three/fiber";
+import { useExperience } from "@/store/experience";
 import { SCENE_TOKENS } from "@/lib/scene-contract";
 import { buildTerrainGeometry, type HeightField } from "./lib/terrain";
 import { pickUniforms, sharedUniforms } from "./lib/uniforms";
@@ -50,10 +52,17 @@ export function Terrain({ field }: Props) {
     [material, paperMaterial],
   );
 
+  // A plain click on the ground (not a drag) releases the framed parcel.
+  const onGroundClick = (e: ThreeEvent<MouseEvent>) => {
+    const s = useExperience.getState();
+    if (e.delta > 6 || s.mode !== "parcel" || s.menuOpen || s.transitioning) return;
+    s.selectParcel(null);
+  };
+
   return (
     <group>
-      <mesh geometry={geometry} material={material} frustumCulled={false} />
-      <mesh rotation-x={-Math.PI / 2} position-y={-0.8} material={paperMaterial}>
+      <mesh geometry={geometry} material={material} frustumCulled={false} onClick={onGroundClick} />
+      <mesh rotation-x={-Math.PI / 2} position-y={-0.8} material={paperMaterial} onClick={onGroundClick}>
         <planeGeometry args={[field.extent * 16, field.extent * 16]} />
       </mesh>
     </group>

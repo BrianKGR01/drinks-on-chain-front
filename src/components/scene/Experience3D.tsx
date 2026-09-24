@@ -105,7 +105,7 @@ export default function Experience3D({ className }: Experience3DProps) {
       <div className={`fixed inset-0 z-0 ${className ?? ""}`} data-scene-root>
         <Canvas
           style={{ position: "absolute", inset: 0, touchAction: "none" }}
-          dpr={[1, 1.75]}
+          dpr={[1, 1.5]}
           flat
           frameloop="always"
           gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
