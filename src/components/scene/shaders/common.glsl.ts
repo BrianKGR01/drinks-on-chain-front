@@ -37,6 +37,22 @@ float fbm(vec2 p) {
   }
   return v;
 }
+// cheaper variants for terms that only need broad structure
+float fbm3(vec2 p) {
+  mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
+  float v = 0.5 * vnoise(p);
+  p = m * p;
+  v += 0.25 * vnoise(p);
+  p = m * p;
+  v += 0.125 * vnoise(p);
+  return v;
+}
+float fbm2(vec2 p) {
+  mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
+  float v = 0.5 * vnoise(p);
+  v += 0.25 * vnoise(m * p);
+  return v;
+}
 `;
 
 export const GLSL_HATCH = /* glsl */ `

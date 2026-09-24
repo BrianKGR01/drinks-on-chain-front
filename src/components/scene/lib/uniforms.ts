@@ -22,7 +22,7 @@ export const INK = {
   hatchDark: hexToVec3(SCENE_TOKENS.hatchDark),
 } as const;
 
-export const MAX_CLOUDS = 8;
+export const MAX_CLOUDS = 6;
 
 /** Fixed "engraver's light" direction (from the upper-left, slightly north). */
 export const LIGHT_DIR = new THREE.Vector3(-0.55, 0.62, -0.48).normalize();
