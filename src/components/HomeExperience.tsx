@@ -27,7 +27,7 @@ export function HomeExperience() {
   const hudHidden = !entered || menuOpen;
 
   return (
-    <main className="relative min-h-screen">
+    <main className="relative min-h-screen pointer-events-none [&>*]:pointer-events-auto">
       <AgeGate />
       <SiteChrome hideCta={!entered} />
       <MapCta hidden={hudHidden} />
