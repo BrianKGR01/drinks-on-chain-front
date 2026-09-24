@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { AgeGate } from "@/components/intro/AgeGate";
 import { BackToValley } from "@/components/hud/BackToValley";
@@ -10,14 +9,9 @@ import { ParcelNavigator } from "@/components/hud/ParcelNavigator";
 import { SiteChrome } from "@/components/hud/SiteChrome";
 import { useExperience } from "@/store/experience";
 
-const Experience3D = dynamic(() => import("@/components/scene/Experience3D"), {
-  ssr: false,
-  loading: () => null,
-});
-
 /**
- * Home: the WebGL valley underneath, the age gate on top until the visitor
- * enters, then the HUD (menu, map toggle, parcel navigator, discover CTA).
+ * Home: the age gate on top of the WebGL valley (mounted once in the root
+ * layout by SceneHost), then the HUD (menu, map toggle, navigator, CTA).
  */
 export function HomeExperience() {
   const entered = useExperience((s) => s.entered);
@@ -34,7 +28,6 @@ export function HomeExperience() {
 
   return (
     <main className="relative min-h-screen">
-      <Experience3D />
       <AgeGate />
       <SiteChrome hideCta={!entered} />
       <MapCta hidden={hudHidden} />

@@ -42,6 +42,13 @@ docs/                  análisis de la referencia y plan de implementación del 
 
 Los nombres de parcelas son zonas vitivinícolas reales del Valle Central de Tarija y del Valle de Cinti; posiciones, superficies y fichas son **placeholder** hasta recibir los datos de las bodegas. Todo se edita en `src/content/`.
 
+## Flujo de trabajo en Git
+
+- `main`: versiones estables. No se hace commit directo.
+- `dev`: rama de integración; todo el trabajo diario se commitea aquí.
+- Cuando `dev` acumula un cambio significativo se abre un PR `dev → main`.
+- Mensajes con [Conventional Commits](https://www.conventionalcommits.org/es/): `feat(scope): …`, `fix(scope): …`, `style(theme): …`, `docs: …`, `refactor: …`, `chore: …`. Scopes habituales: `scene`, `hud`, `intro`, `menu`, `pages`, `content`, `theme`.
+
 ## Documentación
 
 - `docs/analisis-referencia-chartogne.md` — qué es la referencia y cómo la replicamos.

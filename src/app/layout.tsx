@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, EB_Garamond } from "next/font/google";
+import { SceneHost } from "@/components/SceneHost";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -45,7 +46,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es" className={`${cormorant.variable} ${garamond.variable}`}>
-      <body className="paper-grain">{children}</body>
+      <body className="paper-grain">
+        <SceneHost />
+        {children}
+      </body>
     </html>
   );
 }
