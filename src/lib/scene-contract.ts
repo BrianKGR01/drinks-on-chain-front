@@ -98,6 +98,6 @@ export const SCENE_TOKENS = {
   paperShade: "#f4efe2",
   ink: "#2b2622",
   inkSoft: "#6b655b",
-  accent: "#c23d2a",
+  accent: "#b8891f",
   hatchDark: "#3a342e",
 } as const;
