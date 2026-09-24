@@ -2,8 +2,9 @@
 
 import { DiscoverFooter } from "@/components/pages/DiscoverFooter";
 import { PageShell } from "@/components/pages/PageShell";
-import { FramedHatch } from "@/components/ui/InkIllustrations";
+import { InkPhoto } from "@/components/ui/InkPhoto";
 import { UI } from "@/content/i18n";
+import { IMAGES } from "@/content/images";
 import { useExperience } from "@/store/experience";
 import styles from "./Editorial.module.css";
 
@@ -18,25 +19,22 @@ const COPY = {
       {
         heading: "El origen",
         body: [
-          "El Valle Central de Tarija y el Valle de Cinti llevan más de cuatro siglos haciendo vino y destilando singani. Misioneros, arrieros y familias criollas plantaron Moscatel de Alejandría en terrazas junto al río, y algunas de esas plantas, trepadas sobre molles y chañares, siguen dando fruto.",
+          "La vid llegó a los Cintis y a Tarija con los primeros pobladores españoles del siglo XVI; hacia 1590 ya se documentan viñas en Tolomosa. En el cañón de Cinti las parras se conducen todavía sobre molles y chañares, un sistema de más de dos siglos que da vides centenarias y una vendimia que se hace con escalera.",
           "Trabajamos con bodegas que conocen sus parcelas por su nombre y que aceptan mostrar cómo trabajan. Esa transparencia es la materia prima de todo lo que hacemos.",
         ],
-        figure: "Terrazas de Moscatel en el cañón de Cinti, plantadas sobre árboles.",
       },
       {
         heading: "La altura",
         body: [
-          "A dos mil metros la radiación ultravioleta es intensa y las noches frías. La uva engrosa la piel, guarda acidez y concentra aromas. Los tintos salen tensos y minerales; el singani, destilado del vino de Moscatel, conserva el jazmín y el durazno blanco de la uva.",
-          "El mapa que recorre esta web dibuja esas parcelas una a una, con su exposición, su suelo y su altitud, como lo haría un cuaderno de campo.",
+          "A dos mil metros la radiación ultravioleta es intensa y las noches frías. La uva engrosa la piel, guarda acidez y concentra aromas. Los tintos de Tarija, con el Tannat a la cabeza, salen tensos y minerales; el singani, destilado del vino de Moscatel de Alejandría cultivada por encima de los 1.600 metros, conserva el jazmín y el durazno blanco de la uva.",
+          "El mapa que recorre esta web dibuja esas zonas una a una, con su exposición, su suelo y su altitud, como lo haría un cuaderno de campo.",
         ],
-        figure: "El Valle Central de Tarija desde el camino a San Lorenzo.",
       },
       {
         heading: "La trazabilidad",
         body: [
           "Del pesaje en báscula al embotellado, cada paso queda escrito en una bitácora que no se puede reescribir. La botella lleva un código único; quien lo lee ve la historia completa y, si quiere, puede adquirir la próxima añada directamente a la bodega.",
         ],
-        figure: "Bitácora de fermentación, tanque 4, vendimia 2026.",
       },
     ],
     highlight: "Una botella es un lugar, un año y una familia. Nosotros solo nos encargamos de que no se pierda en el camino.",
@@ -52,25 +50,22 @@ const COPY = {
       {
         heading: "The origin",
         body: [
-          "The Central Valley of Tarija and the Cinti Valley have been making wine and distilling singani for more than four centuries. Missionaries, muleteers and creole families planted Moscatel de Alejandría on terraces by the river, and some of those vines, climbing on molle and chañar trees, still bear fruit.",
+          "Vines reached the Cinti valley and Tarija with the first Spanish settlers of the 16th century; by 1590 vineyards are documented in Tolomosa. In the Cinti canyon the vines are still trained on molle and chañar trees, a system over two centuries old that yields centenarian plants and a harvest done by ladder.",
           "We work with wineries that know their parcels by name and agree to show how they work. That transparency is the raw material of everything we do.",
         ],
-        figure: "Moscatel terraces in the Cinti canyon, trained on trees.",
       },
       {
         heading: "The altitude",
         body: [
-          "At two thousand metres the ultraviolet light is fierce and the nights are cold. The grapes thicken their skins, keep their acidity and concentrate their aromas. The reds come out taut and mineral; singani, distilled from Moscatel wine, keeps the jasmine and white peach of the grape.",
-          "The map on this site draws those parcels one by one, with their exposure, soil and altitude, the way a field notebook would.",
+          "At two thousand metres the ultraviolet light is fierce and the nights are cold. The grapes thicken their skins, keep their acidity and concentrate their aromas. Tarija's reds, Tannat first among them, come out taut and mineral; singani, distilled from Moscatel de Alejandría grown above 1,600 metres, keeps the jasmine and white peach of the grape.",
+          "The map on this site draws those zones one by one, with their exposure, soil and altitude, the way a field notebook would.",
         ],
-        figure: "The Central Valley of Tarija from the road to San Lorenzo.",
       },
       {
         heading: "Traceability",
         body: [
           "From the weighbridge to bottling, every step is written in a log that cannot be rewritten. Each bottle carries a unique code; whoever reads it sees the whole story and, if they wish, can buy the next vintage directly from the winery.",
         ],
-        figure: "Fermentation log, tank 4, 2026 harvest.",
       },
     ],
     highlight: "A bottle is a place, a year and a family. We only make sure none of it gets lost on the way.",
@@ -78,10 +73,18 @@ const COPY = {
   },
 } as const;
 
+/** Photographs per block, picked from the researched, freely licensed set. */
+const pick = (i: number) => IMAGES.history[i % Math.max(1, IMAGES.history.length)];
+
 export function HistoryPage() {
   const lang = useExperience((s) => s.lang);
   const c = COPY[lang];
   const t = UI[lang];
+  const hero = IMAGES.villages.tarija?.[0] ?? pick(0); // aerial harvest view
+  const origin = pick(7); // centenarian vines on trees, Cinti
+  const altitude = pick(4); // Moscatel de Alejandría grapes
+  const trace = pick(5); // barrels
+  const still = pick(3); // copper still
 
   return (
     <PageShell eyebrow={t.historyTitle}>
@@ -97,28 +100,53 @@ export function HistoryPage() {
         ))}
       </div>
 
-      <FramedHatch ratio={1.85} className={styles.hero} caption={c.sections[0].figure} />
+      {hero ? (
+        <InkPhoto
+          src={hero.src}
+          alt={hero.alt[lang]}
+          caption={hero.caption[lang]}
+          credit={hero.credit}
+          ratio={1.85}
+          className={styles.hero}
+          priority
+          sizes="100vw"
+        />
+      ) : null}
 
-      {c.sections.map((s, i) => (
-        <section key={s.heading} className={styles.block}>
-          <div className={`${styles.textAlignLeft} prose-body`}>
-            <h3>{s.heading}</h3>
-            {s.body.map((p, k) => (
-              <p key={k}>{p}</p>
-            ))}
-          </div>
-          {i === 1 ? (
-            <p className={`${styles.highlight} highlight`}>{c.highlight}</p>
-          ) : null}
-          {i > 0 ? (
-            <FramedHatch
-              ratio={i === 1 ? 0.74 : 1.7}
-              className={i === 1 ? styles.portrait : styles.wide}
-              caption={s.figure}
-            />
-          ) : null}
-        </section>
-      ))}
+      {c.sections.map((s, i) => {
+        const photo = i === 0 ? origin : i === 1 ? altitude : trace;
+        return (
+          <section key={s.heading} className={styles.block}>
+            <div className={`${styles.textAlignLeft} prose-body`}>
+              <h3>{s.heading}</h3>
+              {s.body.map((p, k) => (
+                <p key={k}>{p}</p>
+              ))}
+            </div>
+            {i === 1 ? <p className={`${styles.highlight} highlight`}>{c.highlight}</p> : null}
+            {photo ? (
+              <InkPhoto
+                src={photo.src}
+                alt={photo.alt[lang]}
+                caption={photo.caption[lang]}
+                credit={photo.credit}
+                ratio={i === 1 ? 0.74 : 1.7}
+                className={i === 1 ? styles.portrait : styles.wide}
+              />
+            ) : null}
+            {i === 2 && still ? (
+              <InkPhoto
+                src={still.src}
+                alt={still.alt[lang]}
+                caption={still.caption[lang]}
+                credit={still.credit}
+                ratio={1.5}
+                className={styles.portrait}
+              />
+            ) : null}
+          </section>
+        );
+      })}
 
       <DiscoverFooter href="/vinos" caption={c.next} prepend={t.discover} />
     </PageShell>

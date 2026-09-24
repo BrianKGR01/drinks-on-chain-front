@@ -78,6 +78,7 @@
 }
 @keyframes fade { from { opacity: 0; transform: translateX(-50%) translateY(0.5rem); } }
 .bottle { height: 64vh; width: auto; color: var(--ink); }
+.photo { width: 100%; max-width: 34vh; margin-bottom: 4vh; color: var(--ink); pointer-events: auto; }
 @media (max-width: 767px) {
   .packshot { position: static; transform: none; width: auto; height: 60vh; padding: 3rem 0 1rem; }
   .bottle { height: 100%; }

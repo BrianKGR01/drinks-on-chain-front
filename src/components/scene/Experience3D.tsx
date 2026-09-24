@@ -14,6 +14,11 @@ import { World } from "./World";
 export interface Experience3DProps {
   /** Extra classes for the fixed full-screen container. */
   className?: string;
+  /**
+   * False while another route covers the scene: the render loop pauses and the
+   * container is hidden, but the world stays in memory for an instant return.
+   */
+  active?: boolean;
 }
 
 class SceneErrorBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
@@ -43,7 +48,7 @@ function supportsWebGL(): boolean {
  * Ink-on-paper WebGL centrepiece. Reads `useExperience` for mode / village /
  * active parcel and drives parcel hover + selection back into the store.
  */
-export default function Experience3D({ className }: Experience3DProps) {
+export default function Experience3D({ className, active = true }: Experience3DProps) {
   const [webgl] = useState(supportsWebGL);
   const villageId = useExperience((s) => s.villageId);
   const [shownId, setShownId] = useState(villageId);
@@ -53,20 +58,9 @@ export default function Experience3D({ className }: Experience3DProps) {
   const village = useMemo(() => getVillage(shownId) ?? VILLAGES[0], [shownId]);
   const field = useMemo(() => createHeightField(village), [village]);
 
-  // Intro: the world stays hidden behind paper until the visitor enters,
-  // then the paper lifts (the reference reveals the map only after "Entrer").
+  // Intro veil: opaque until the visitor enters, then lifted by a CSS
+  // transition (see .scene-veil in globals.css) so it never depends on rAF.
   const entered = useExperience((s) => s.entered);
-  // Initial opacity only: React must not re-apply it while GSAP animates.
-  const [initiallyEntered] = useState(() => useExperience.getState().entered);
-  useEffect(() => {
-    const el = overlayRef.current;
-    if (!el || !entered) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const tween = gsap.to(el, { opacity: 0, duration: reduced ? 0.1 : 1.6, ease: "power2.inOut", delay: reduced ? 0 : 0.4 });
-    return () => {
-      tween.kill();
-    };
-  }, [entered]);
 
   // Village change: fade to paper, swap the world, reveal.
   useEffect(() => {
@@ -84,6 +78,7 @@ export default function Experience3D({ className }: Experience3DProps) {
       store.setTransitioning(false);
       return;
     }
+    el.style.transition = "none";
     const tl = gsap.timeline();
     tl.to(el, { opacity: 1, duration: reduced ? 0.1 : 0.6, ease: "power2.in", onComplete: swap });
     tl.to(el, {
@@ -91,7 +86,11 @@ export default function Experience3D({ className }: Experience3DProps) {
       duration: reduced ? 0.1 : 0.9,
       ease: "power2.out",
       delay: 0.2,
-      onComplete: () => useExperience.getState().setTransitioning(false),
+      onComplete: () => {
+        el.style.transition = "";
+        el.style.opacity = "";
+        useExperience.getState().setTransitioning(false);
+      },
     });
     return () => {
       tl.kill();
@@ -102,12 +101,17 @@ export default function Experience3D({ className }: Experience3DProps) {
 
   return (
     <SceneErrorBoundary>
-      <div className={`fixed inset-0 z-0 ${className ?? ""}`} data-scene-root>
+      <div
+        className={`fixed inset-0 z-0 ${className ?? ""}`}
+        data-scene-root
+        style={{ visibility: active ? "visible" : "hidden" }}
+        aria-hidden={!active}
+      >
         <Canvas
           style={{ position: "absolute", inset: 0, touchAction: "none" }}
-          dpr={[1, 1.75]}
+          dpr={[1, 1.5]}
           flat
-          frameloop="always"
+          frameloop={active ? "always" : "never"}
           gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
           camera={{ fov: 35, near: 4, far: 30000, position: [0, 1200, 1400] }}
           onCreated={({ gl }) => {
@@ -122,8 +126,8 @@ export default function Experience3D({ className }: Experience3DProps) {
         <div
           ref={overlayRef}
           aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{ background: SCENE_TOKENS.paper, opacity: initiallyEntered ? 0 : 1 }}
+          className={`scene-veil pointer-events-none absolute inset-0 ${entered ? "scene-veil--lifted" : ""}`}
+          style={{ background: SCENE_TOKENS.paper }}
         />
       </div>
     </SceneErrorBoundary>

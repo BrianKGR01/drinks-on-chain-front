@@ -3,6 +3,9 @@
 import { DiscoverFooter } from "@/components/pages/DiscoverFooter";
 import { PageShell } from "@/components/pages/PageShell";
 import { BottleIllustration, SoilProfile } from "@/components/ui/InkIllustrations";
+import { InkPhoto } from "@/components/ui/InkPhoto";
+import { IMAGES } from "@/content/images";
+import { ZONES } from "@/content/zones";
 import { UI } from "@/content/i18n";
 import { getParcelContent } from "@/content/parcels";
 import type { ParcelSpec, VillageSpec } from "@/lib/scene-contract";
@@ -21,6 +24,15 @@ export function ParcelPage({ village, parcel, next }: ParcelPageProps) {
   const t = UI[lang];
   const content = getParcelContent(village, parcel, lang);
   const { ground, wine } = content;
+  const facts = ZONES[parcel.id]?.facts;
+  const villageIndex = village.parcels.findIndex((p) => p.id === parcel.id);
+  const villagePhotos = IMAGES.villages[village.id] ?? [];
+  const photos = IMAGES.parcels[parcel.id]?.length
+    ? IMAGES.parcels[parcel.id]
+    : villagePhotos.length
+      ? [villagePhotos[villageIndex % villagePhotos.length]]
+      : [];
+  const winePhoto = IMAGES.wines[parcel.id];
 
   return (
     <PageShell eyebrow={village.name[lang]}>
@@ -43,6 +55,18 @@ export function ParcelPage({ village, parcel, next }: ParcelPageProps) {
           </div>
         </header>
 
+        {photos[0] ? (
+          <InkPhoto
+            src={photos[0].src}
+            alt={photos[0].alt[lang]}
+            caption={photos[0].caption[lang]}
+            credit={photos[0].credit}
+            ratio={1.6}
+            className={styles.parcelPhoto}
+            priority
+          />
+        ) : null}
+
         <div className={styles.description}>
           {ground.description.map((p, i) => (
             <p key={i}>{p}</p>
@@ -53,7 +77,28 @@ export function ParcelPage({ village, parcel, next }: ParcelPageProps) {
           {ground.details.map((line) => (
             <p key={line}>{line}</p>
           ))}
+          {facts ? (
+            <>
+              <p>
+                {lang === "es" ? "Municipio" : "Municipality"} / {facts.municipality}, {facts.province}
+              </p>
+              <p>
+                {lang === "es" ? "Bodegas" : "Wineries"} / {facts.wineries.join(" · ")}
+              </p>
+            </>
+          ) : null}
         </div>
+
+        {photos[1] ? (
+          <InkPhoto
+            src={photos[1].src}
+            alt={photos[1].alt[lang]}
+            caption={photos[1].caption[lang]}
+            credit={photos[1].credit}
+            ratio={1.45}
+            className={styles.parcelPhotoSecond}
+          />
+        ) : null}
       </section>
 
       <section className={styles.underground}>
@@ -79,12 +124,23 @@ export function ParcelPage({ village, parcel, next }: ParcelPageProps) {
           </div>
         </header>
 
-        <BottleIllustration
-          kind={wine.kind}
-          label={wine.name}
-          sublabel={wine.kind === "singani" ? `Singani · ${parcel.altitude} m` : `Vino · ${parcel.altitude} m`}
-          className={styles.packshot}
-        />
+        {winePhoto ? (
+          <InkPhoto
+            src={winePhoto.src}
+            alt={winePhoto.alt[lang]}
+            caption={winePhoto.caption[lang]}
+            credit={winePhoto.credit}
+            ratio={0.8}
+            className={styles.winePhoto}
+          />
+        ) : (
+          <BottleIllustration
+            kind={wine.kind}
+            label={wine.name}
+            sublabel={wine.kind === "singani" ? `Singani · ${parcel.altitude} m` : `Vino · ${parcel.altitude} m`}
+            className={styles.packshot}
+          />
+        )}
 
         <div className={styles.wineBlocks}>
           {wine.content.map((block, i) => {
@@ -111,6 +167,18 @@ export function ParcelPage({ village, parcel, next }: ParcelPageProps) {
           })}
         </div>
       </section>
+
+      {facts?.sources?.length ? (
+        <p className={styles.sources}>
+          {lang === "es" ? "Fuentes" : "Sources"}:{" "}
+          {facts.sources.slice(0, 4).map((u, i) => (
+            <a key={u} href={u} target="_blank" rel="noreferrer">
+              {i > 0 ? " · " : ""}
+              {new URL(u).hostname.replace(/^www\./, "")}
+            </a>
+          ))}
+        </p>
+      ) : null}
 
       <DiscoverFooter
         href={`/parcelas/${village.slug}/${next.slug}`}
