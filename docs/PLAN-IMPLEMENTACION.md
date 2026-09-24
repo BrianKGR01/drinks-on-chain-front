@@ -1,3 +1,5 @@
+> **Superado (24 de septiembre de 2026).** La planificación vigente del ecosistema vive en la carpeta raíz `F:\Project\DrinksOnChain\docs\` (`01-analisis-ecosistema.md` … `06-decisiones-y-preguntas.md`). Dos cambios importantes respecto a este documento: la cadena es **Stellar** (smart wallets con passkeys y tokens SEP-41, no Privy/EVM) y la landing evoluciona a **portada del ecosistema** con perfiles por bodega. Se conserva como registro de la primera versión.
+
 # Drinks on Chain — Plan de implementación del frontend
 
 Versión 0.1 · 24 de septiembre de 2026 · Alcance: **solo cliente/frontend** de cada plataforma. El backend, la blockchain y la infraestructura los provee otro equipo; nosotros definimos los contratos que el frontend necesita y trabajamos contra mocks hasta que existan.

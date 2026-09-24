@@ -52,4 +52,4 @@ Las 22 parcelas son zonas vitivinícolas reales del Valle Central de Tarija y de
 ## Documentación
 
 - `docs/analisis-referencia-chartogne.md` — qué es la referencia y cómo la replicamos.
-- `docs/PLAN-IMPLEMENTACION.md` — plan del frontend de los cuatro sistemas del MVP (ERP, Marketplace, Backoffice, POS de claim), billeteras y calendario.
+- `docs/PLAN-IMPLEMENTACION.md` — primera versión del plan (superada; ver la carpeta `docs/` de la raíz del ecosistema: análisis, plan de la landing, roadmap, billeteras Stellar, sistema de diseño).
