@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { PageShell } from "@/components/pages/PageShell";
 import { BottleIllustration } from "@/components/ui/InkIllustrations";
+import { InkPhoto } from "@/components/ui/InkPhoto";
+import { IMAGES } from "@/content/images";
 import { UI } from "@/content/i18n";
 import { getParcelContent, grapeOf, wineKindOf } from "@/content/parcels";
 import { VILLAGES } from "@/content/villages";
@@ -39,6 +41,7 @@ export function WinesPage({ initialSlug }: { initialSlug?: string }) {
   const [index, setIndex] = useState(initialIndex);
   const current = wines[index];
   const content = getParcelContent(current.village, current.parcel, lang);
+  const photo = IMAGES.wines[current.parcel.id];
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -62,25 +65,38 @@ export function WinesPage({ initialSlug }: { initialSlug?: string }) {
                 aria-current={i === index ? "true" : undefined}
               >
                 <span className={styles.listKind}>{w.kind === "singani" ? "Singani" : "Vino"}</span>
-                {w.parcel.name}
+                {getParcelContent(w.village, w.parcel, lang).wine.name}
               </button>
             </li>
           ))}
         </ul>
 
         <div className={styles.packshot} key={current.parcel.id}>
-          <BottleIllustration
-            kind={current.kind}
-            label={current.parcel.name}
-            sublabel={`${current.kind === "singani" ? "Singani" : "Vino"} · ${current.parcel.altitude} m`}
-            className={styles.bottle}
-          />
+          {photo ? (
+            <InkPhoto
+              src={photo.src}
+              alt={photo.alt[lang]}
+              credit={photo.credit}
+              ratio={0.75}
+              className={styles.photo}
+              sizes="(max-width: 767px) 60vw, 26vw"
+            />
+          ) : (
+            <BottleIllustration
+              kind={current.kind}
+              label={content.wine.name}
+              sublabel={`${current.parcel.name} · ${current.parcel.altitude} m`}
+              className={styles.bottle}
+            />
+          )}
         </div>
 
         <div className={styles.details}>
-          <h2 className={styles.title}>{current.parcel.name}</h2>
+          <h2 className={styles.title}>{content.wine.name}</h2>
           <div className={styles.entries}>
-            <span>{current.village.name[lang]}</span>
+            <span>
+              {current.parcel.name} · {current.village.name[lang]}
+            </span>
             <span>{current.grape}</span>
             {content.wine.specifications.map((s) => (
               <span key={s}>{s}</span>

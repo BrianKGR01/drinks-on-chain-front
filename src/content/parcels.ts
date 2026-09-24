@@ -1,12 +1,13 @@
 import type { Lang, ParcelSpec, VillageSpec } from "@/lib/scene-contract";
+import { getZoneContent } from "./zones";
 
 /**
  * Editorial content of each parcel: the "ground" sheet and the "wine" sheet,
  * mirroring the reference's data model (specifications / description /
  * details / underground levels + wine name / specifications / blocks).
  *
- * PLACEHOLDER COPY — written to exercise the layout with plausible Bolivian
- * terroir data. Replace per bodega once real technical sheets arrive.
+ * The sourced, real content lives in ./zones.ts (see docs/FUENTES-CONTENIDO.md).
+ * The generator below is only a fallback for a parcel without a zone entry.
  */
 
 export type ContentBlock =
@@ -234,7 +235,7 @@ function buildContent(village: VillageSpec, parcel: ParcelSpec, lang: Lang): Par
 }
 
 export function getParcelContent(village: VillageSpec, parcel: ParcelSpec, lang: Lang): ParcelContent {
-  return buildContent(village, parcel, lang);
+  return getZoneContent(parcel.id, lang) ?? buildContent(village, parcel, lang);
 }
 
 /** Convenience for the wines index: which parcels bottle their own label. */

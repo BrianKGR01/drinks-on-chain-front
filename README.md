@@ -40,7 +40,7 @@ docs/                  análisis de la referencia y plan de implementación del 
 
 ## Contenido
 
-Los nombres de parcelas son zonas vitivinícolas reales del Valle Central de Tarija y del Valle de Cinti; posiciones, superficies y fichas son **placeholder** hasta recibir los datos de las bodegas. Todo se edita en `src/content/`.
+Las 22 parcelas son zonas vitivinícolas reales del Valle Central de Tarija y del Valle de Cinti, con altitud, municipio, variedades, bodegas y un vino o singani real por zona, todo con fuentes (`docs/FUENTES-CONTENIDO.md`). Las fotografías son de Wikimedia Commons con licencia libre (`docs/CREDITOS-IMAGENES.md`). La geometría del mapa (posición y tamaño de parcelas, trazado del pueblo) es ilustrativa hasta recibir datos de las bodegas. Todo se edita en `src/content/`.
 
 ## Flujo de trabajo en Git
 

@@ -285,3 +285,24 @@
   margin: 3em 0 1em;
 }
 .legal p + p { margin-top: 1em; }
+
+/* ---------------- Photographs on parcel pages ---------------- */
+.parcelPhoto { width: 100%; margin-top: 2rem; color: var(--ink); }
+.parcelPhotoSecond { width: 80%; margin: 6rem 0 0 auto; color: var(--ink); }
+.winePhoto { width: 42%; max-width: 20rem; margin: 6rem auto 5rem; color: var(--ink); }
+.sources {
+  max-width: 35.4166666667vw;
+  margin: 6rem 0 0 32.2916666665vw;
+  padding: 0 3.6458333333vw;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+.sources a { border-bottom: 1px solid var(--hairline); }
+.sources a:hover { color: var(--accent-deep); }
+@media (max-width: 767px) {
+  .parcelPhoto, .parcelPhotoSecond { width: auto; margin: 3rem 1.875rem 0; }
+  .winePhoto { width: 60%; margin: 3rem auto; }
+  .sources { max-width: none; margin: 3rem 1.875rem 0; padding: 0; }
+}
