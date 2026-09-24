@@ -6,6 +6,23 @@
 }
 .intro.leaving { pointer-events: none; }
 
+/* Vine ornaments --------------------------------------------------- */
+.ornament {
+  position: absolute;
+  width: clamp(160px, 24vw, 380px);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.6s ease 0.1s;
+}
+.ornamentTopLeft { left: 2.5vw; top: 1.5vw; transform: scaleY(-1); }
+.ornamentBottomRight { right: 2.5vw; bottom: 1.5vw; }
+.leaving .ornament { opacity: 0; }
+@media (max-width: 767px) {
+  .ornament { width: 34vw; }
+  .ornamentTopLeft { left: -4vw; top: -2vw; }
+  .ornamentBottomRight { right: -4vw; bottom: 3.5rem; }
+}
+
 /* Logo ------------------------------------------------------------- */
 .logo {
   position: absolute;

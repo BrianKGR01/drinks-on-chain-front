@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { Logo } from "@/components/brand/Logo";
 import { LetterSplit } from "@/components/ui/LetterSplit";
+import { VineOrnament } from "@/components/intro/VineOrnament";
 import { LANGS, UI } from "@/content/i18n";
 import { useExperience } from "@/store/experience";
 import styles from "./AgeGate.module.css";
@@ -48,6 +49,13 @@ export function AgeGate() {
       aria-modal="true"
       aria-label={t.ageGateAria}
     >
+      <div className={`${styles.ornament} ${styles.ornamentTopLeft}`} aria-hidden="true">
+        <VineOrnament delay={0.2} />
+      </div>
+      <div className={`${styles.ornament} ${styles.ornamentBottomRight}`} aria-hidden="true">
+        <VineOrnament flip delay={0.8} />
+      </div>
+
       <div className={styles.logo}>
         <Logo link={false} />
       </div>

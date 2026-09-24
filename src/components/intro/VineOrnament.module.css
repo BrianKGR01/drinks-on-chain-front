@@ -1,0 +1,23 @@
+.svg {
+  display: block;
+  color: var(--ink);
+  opacity: 0.62;
+  overflow: visible;
+}
+.flip { transform: scaleX(-1); }
+
+.stroke {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: calc(1 - var(--extra, 0) * 0.45);
+  animation: draw 2.6s var(--ease-out) forwards;
+  animation-delay: calc(var(--delay, 0s) + 0.9s + var(--i, 0) * 0.18s);
+}
+
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stroke { animation: none; stroke-dashoffset: 0; }
+}
