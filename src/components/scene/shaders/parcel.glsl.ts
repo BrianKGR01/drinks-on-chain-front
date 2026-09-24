@@ -49,11 +49,11 @@ void main() {
 
   float vis = inkVisibility(vWorldPos);
   float hi = max(uActive, uHover);
-  vec3 hoverTint = mix(uAccent, uPaper, 0.22);
+  vec3 hoverTint = mix(uAccent, uInk, 0.1); // clearly gold, not washed out
   vec3 activeGold = mix(uAccent, uInk, 0.28); // deeper gold so thin rows still read
   vec3 lineCol = mix(mix(uInk, hoverTint, uHover), activeGold, uActive);
   float ink = max(rows * (0.78 + 0.22 * hi), outline * 0.95) * vis;
-  vec3 fill = mix(uPaper, uAccent, (uActive * 0.11 + uHover * 0.05) * vis);
+  vec3 fill = mix(uPaper, uAccent, (uActive * 0.12 + uHover * 0.09) * vis);
   vec3 col = mix(fill, lineCol, ink);
   gl_FragColor = vec4(col, 1.0);
 }
