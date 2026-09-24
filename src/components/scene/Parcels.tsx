@@ -125,17 +125,20 @@ export function Parcels({ village, field }: Props) {
   );
 }
 
-/** Name of the framed parcel, floating above it (styled globally via .scene-parcel-label). */
+/** Name of the framed (or hovered) parcel, floating above it (styled globally via .scene-parcel-label). */
 function ParcelLabel({ village, field }: { village: VillageSpec; field: HeightField }) {
   const mode = useExperience((s) => s.mode);
   const index = useExperience((s) => s.activeParcelIndex);
-  const parcel = index !== null ? (village.parcels[index] ?? null) : null;
+  const hoveredId = useExperience((s) => s.hoveredParcelId);
+  const framed = mode === "parcel" && index !== null ? (village.parcels[index] ?? null) : null;
+  const hovered = hoveredId ? (village.parcels.find((p) => p.id === hoveredId) ?? null) : null;
+  const parcel = framed ?? (mode === "intro" ? null : hovered);
   // keep the last parcel mounted so the label can fade out
   const [last, setLast] = useState<ParcelSpec | null>(parcel);
   if (parcel && parcel !== last) setLast(parcel);
   const target = parcel ?? last;
   if (!target) return null;
-  const visible = parcel !== null && mode === "parcel";
+  const visible = parcel !== null;
   const [cx, cz] = target.center;
   const y = field.getHeight(cx, cz) + Math.max(target.size[0], target.size[1]) * 0.22 + 18;
   return (

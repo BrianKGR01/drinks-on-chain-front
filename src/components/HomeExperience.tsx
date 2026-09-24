@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { AgeGate } from "@/components/intro/AgeGate";
+import { BackToValley } from "@/components/hud/BackToValley";
 import { DiscoverCta } from "@/components/hud/DiscoverCta";
 import { MapCta } from "@/components/hud/MapCta";
 import { ParcelNavigator } from "@/components/hud/ParcelNavigator";
@@ -37,6 +38,7 @@ export function HomeExperience() {
       <AgeGate />
       <SiteChrome hideCta={!entered} />
       <MapCta hidden={hudHidden} />
+      <BackToValley hidden={hudHidden} />
       <ParcelNavigator hidden={hudHidden} />
       <DiscoverCta hidden={hudHidden} />
     </main>
