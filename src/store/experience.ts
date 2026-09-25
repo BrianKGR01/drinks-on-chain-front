@@ -1,8 +1,9 @@
 "use client";
 
 import { create } from "zustand";
-import type { Lang, SceneMode } from "@/lib/scene-contract";
+import type { Lang, MapLayer, SceneMode } from "@/lib/scene-contract";
 import { VILLAGES } from "@/content/villages";
+import { getWinery, wineriesInVillage, wineriesOfParcel } from "@/content/network";
 
 interface ExperienceState {
   lang: Lang;
@@ -13,6 +14,11 @@ interface ExperienceState {
   /** Index into the active village's parcels, or null (none framed). */
   activeParcelIndex: number | null;
   hoveredParcelId: string | null;
+  /** Parcels or partner wineries on top of the valley. */
+  layer: MapLayer;
+  /** Winery framed by the camera (layer "bodegas"), or null. */
+  activeWineryId: string | null;
+  hoveredWineryId: string | null;
   menuOpen: boolean;
   soundOn: boolean;
   sceneReady: boolean;
@@ -29,6 +35,13 @@ interface ExperienceState {
   nextParcel: () => void;
   prevParcel: () => void;
   setHovered: (id: string | null) => void;
+  setLayer: (layer: MapLayer) => void;
+  selectWinery: (id: string | null) => void;
+  /** Parcel click on the "bodegas" layer: frame the winery that farms it. */
+  selectWineryOfParcel: (parcelId: string) => void;
+  nextWinery: () => void;
+  prevWinery: () => void;
+  setHoveredWinery: (id: string | null) => void;
   toggleMenu: (open?: boolean) => void;
   toggleSound: () => void;
   setSceneReady: (ready: boolean) => void;
@@ -42,6 +55,9 @@ export const useExperience = create<ExperienceState>((set, get) => ({
   villageId: VILLAGES[0].id,
   activeParcelIndex: null,
   hoveredParcelId: null,
+  layer: "parcelas",
+  activeWineryId: null,
+  hoveredWineryId: null,
   menuOpen: false,
   soundOn: false,
   sceneReady: false,
@@ -51,9 +67,9 @@ export const useExperience = create<ExperienceState>((set, get) => ({
   enter: () => set({ entered: true, mode: "free" }),
   setMode: (mode) => set({ mode }),
   toggleMap: () => {
-    const { mode, activeParcelIndex } = get();
+    const { mode, activeParcelIndex, activeWineryId } = get();
     if (mode === "map") {
-      set({ mode: activeParcelIndex === null ? "free" : "parcel" });
+      set({ mode: activeWineryId ? "winery" : activeParcelIndex === null ? "free" : "parcel" });
     } else {
       set({ mode: "map" });
     }
@@ -64,12 +80,15 @@ export const useExperience = create<ExperienceState>((set, get) => ({
       villageId,
       activeParcelIndex: null,
       hoveredParcelId: null,
+      activeWineryId: null,
+      hoveredWineryId: null,
       mode: get().mode === "map" ? "map" : "free",
     });
   },
   selectParcel: (index) =>
     set({
       activeParcelIndex: index,
+      activeWineryId: null,
       mode: index === null ? "free" : "parcel",
     }),
   selectParcelById: (id) => {
@@ -92,6 +111,44 @@ export const useExperience = create<ExperienceState>((set, get) => ({
     get().selectParcel(cur === null ? n - 1 : (cur - 1 + n) % n);
   },
   setHovered: (id) => set({ hoveredParcelId: id }),
+  setLayer: (layer) => {
+    if (layer === get().layer) return;
+    const mode = get().mode;
+    set({
+      layer,
+      activeParcelIndex: null,
+      activeWineryId: null,
+      hoveredParcelId: null,
+      hoveredWineryId: null,
+      mode: mode === "parcel" || mode === "winery" ? "free" : mode,
+    });
+  },
+  selectWinery: (id) => {
+    const winery = id ? getWinery(id) : undefined;
+    if (!winery) {
+      set({ activeWineryId: null, mode: get().mode === "map" ? "map" : "free" });
+      return;
+    }
+    if (winery.villageId !== get().villageId) get().setVillage(winery.villageId);
+    set({ layer: "bodegas", activeWineryId: winery.id, activeParcelIndex: null, mode: "winery" });
+  },
+  selectWineryOfParcel: (parcelId) => {
+    const owner = wineriesOfParcel(parcelId)[0];
+    if (owner) get().selectWinery(owner.id);
+  },
+  nextWinery: () => {
+    const list = wineriesInVillage(get().villageId);
+    if (list.length === 0) return;
+    const cur = list.findIndex((w) => w.id === get().activeWineryId);
+    get().selectWinery(list[(cur + 1) % list.length].id);
+  },
+  prevWinery: () => {
+    const list = wineriesInVillage(get().villageId);
+    if (list.length === 0) return;
+    const cur = list.findIndex((w) => w.id === get().activeWineryId);
+    get().selectWinery(list[cur < 0 ? list.length - 1 : (cur - 1 + list.length) % list.length].id);
+  },
+  setHoveredWinery: (id) => set({ hoveredWineryId: id }),
   toggleMenu: (open) => set((s) => ({ menuOpen: open ?? !s.menuOpen })),
   toggleSound: () => set((s) => ({ soundOn: !s.soundOn })),
   setSceneReady: (sceneReady) => set({ sceneReady }),
@@ -108,3 +165,5 @@ export const selectActiveParcel = (s: ExperienceState) => {
     ? null
     : (village.parcels[s.activeParcelIndex] ?? null);
 };
+
+export const selectActiveWinery = (s: ExperienceState) => (s.activeWineryId ? (getWinery(s.activeWineryId) ?? null) : null);

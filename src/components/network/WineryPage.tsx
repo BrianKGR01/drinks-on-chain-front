@@ -31,6 +31,7 @@ const COPY = {
     parcels: "Parcelas",
     network: "En la red",
     mapCaption: "Parcelas de la bodega en el mapa",
+    onMap: "Ver en el mapa",
     products: "Productos",
     lots: "Lotes con trazabilidad pública",
     lotsEmpty: {
@@ -53,6 +54,7 @@ const COPY = {
     parcels: "Parcels",
     network: "On the network",
     mapCaption: "The winery's parcels on the map",
+    onMap: "See it on the map",
     products: "Products",
     lots: "Lots with public traceability",
     lotsEmpty: {
@@ -131,7 +133,12 @@ export function WineryPage({ winery: w }: { winery: Winery }) {
             ]}
             title={`${c.mapCaption}: ${w.name}`}
           />
-          <figcaption className={styles.caption}>{c.mapCaption}</figcaption>
+          <figcaption className={styles.caption}>
+            {c.mapCaption} ·{" "}
+            <Link href="/" className={styles.textLink} onClick={() => useExperience.getState().selectWinery(w.id)}>
+              {c.onMap}
+            </Link>
+          </figcaption>
         </figure>
 
         <div>

@@ -231,6 +231,53 @@ a { color: inherit; text-decoration: none; }
 }
 .scene-parcel-label.is-visible { opacity: 1; transform: translateY(0); }
 
+/* Seats of the partner wineries on the "bodegas" map layer (WineryMarkers) */
+.scene-winery-marker {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+  pointer-events: none;
+}
+.scene-winery-marker.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+.scene-winery-marker__dot {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 3px solid var(--paper);
+  outline: 1px solid var(--ink);
+  transition: transform 0.35s var(--ease-out), background-color 0.35s, outline-color 0.35s;
+}
+.scene-winery-marker__name {
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink);
+  padding: 0.35em 0.8em 0.3em 1.05em;
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
+  box-shadow: 0 0 14px 8px color-mix(in srgb, var(--paper) 75%, transparent);
+  transition: color 0.35s;
+}
+.scene-winery-marker:hover .scene-winery-marker__dot,
+.scene-winery-marker:focus-visible .scene-winery-marker__dot,
+.scene-winery-marker.is-hover .scene-winery-marker__dot,
+.scene-winery-marker.is-active .scene-winery-marker__dot {
+  transform: scale(1.3);
+  background: var(--accent);
+  outline-color: var(--accent);
+}
+.scene-winery-marker:hover .scene-winery-marker__name,
+.scene-winery-marker:focus-visible .scene-winery-marker__name,
+.scene-winery-marker.is-hover .scene-winery-marker__name,
+.scene-winery-marker.is-active .scene-winery-marker__name { color: var(--accent-deep); }
+
 /* While the age gate is mounted the document does not scroll: the visitor
    always enters at the top. Pure CSS, so it holds before hydration. */
 html:has(.gate-root) {
