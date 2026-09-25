@@ -5,13 +5,16 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/brand/Logo";
 import { LANGS, UI } from "@/content/i18n";
+import { LINKS } from "@/lib/links";
 import { useExperience } from "@/store/experience";
 import styles from "./MainMenu.module.css";
 
 /**
- * Full-screen menu: rotated "Cerrar", wordmark, four oversized links with a
- * sliding red indicator on the left, and a footer with languages, legal,
- * social and credit. Escape closes; the route change closes it too.
+ * Full-screen menu: rotated "Cerrar", wordmark, the five sections of the
+ * partner site (Mapa · Bodegas · Puntos de recojo · Unirse · Acceso) with a
+ * sliding gold indicator on the left, and a footer with languages, the
+ * editorial pages, legal, the main landing and credit. Escape closes; the
+ * route change closes it too.
  */
 export function MainMenu() {
   const lang = useExperience((s) => s.lang);
@@ -24,10 +27,11 @@ export function MainMenu() {
   const [hover, setHover] = useState<number | null>(null);
 
   const items = [
-    { href: "/historia", label: t.navHistory },
-    { href: "/vinos", label: t.navWines },
-    { href: "/", label: t.navParcels },
-    { href: "/contacto", label: t.navContact },
+    { href: "/", label: t.navMap },
+    { href: "/bodegas", label: t.navWineries },
+    { href: "/puntos-de-recojo", label: t.navPickup },
+    { href: "/unirse", label: t.navJoin },
+    { href: "/acceso", label: t.navAccess },
   ];
 
   useEffect(() => {
@@ -47,8 +51,8 @@ export function MainMenu() {
     toggleMenu(false);
   }, [pathname, toggleMenu]);
 
-  const currentIndex = items.findIndex((it) => it.href === pathname);
-  const indicatorIndex = hover ?? (currentIndex >= 0 ? currentIndex : 2);
+  const currentIndex = items.findIndex((it) => (it.href === "/" ? pathname === "/" : pathname.startsWith(it.href)));
+  const indicatorIndex = hover ?? (currentIndex >= 0 ? currentIndex : 0);
 
   return (
     <div
@@ -71,7 +75,10 @@ export function MainMenu() {
 
       <nav className={styles.section} aria-label={t.menu}>
         <span className={styles.indicator} aria-hidden="true">
-          <span className={styles.thumb} style={{ transform: `translateY(${indicatorIndex * 100}%)` }} />
+          <span
+            className={styles.thumb}
+            style={{ height: `${100 / items.length}%`, transform: `translateY(${indicatorIndex * 100}%)` }}
+          />
         </span>
         {items.map((it, i) => (
           <Link
@@ -87,7 +94,7 @@ export function MainMenu() {
               if (it.href === "/") selectParcel(null);
               toggleMenu(false);
             }}
-            aria-current={pathname === it.href ? "page" : undefined}
+            aria-current={i === currentIndex ? "page" : undefined}
           >
             {it.label}
           </Link>
@@ -109,16 +116,19 @@ export function MainMenu() {
           ))}
         </div>
         <div className={styles.sect}>
+          <Link href="/historia" className="underline-anim">
+            {t.navHistory}
+          </Link>
+          <Link href="/contacto" className="underline-anim">
+            {t.navContact}
+          </Link>
           <Link href="/aviso-legal" className="underline-anim">
             {t.legalNotice}
           </Link>
         </div>
         <div className={styles.sharing}>
-          <a href="https://instagram.com" target="_blank" rel="noreferrer" className="underline-anim">
-            Instagram
-          </a>
-          <a href="https://facebook.com" target="_blank" rel="noreferrer" className="underline-anim">
-            Facebook
+          <a href={LINKS.landing} className="underline-anim">
+            {t.footerConsumers} →
           </a>
         </div>
         <p className={styles.made}>{t.madeBy}</p>

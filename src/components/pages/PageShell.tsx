@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { SiteChrome } from "@/components/hud/SiteChrome";
+import { SiteFooter } from "@/components/site/SiteFooter";
 import { UI } from "@/content/i18n";
 import { useExperience } from "@/store/experience";
 import styles from "./PageShell.module.css";
@@ -32,6 +33,7 @@ export function PageShell({ eyebrow, children, hideBack = false, className = "" 
         ) : null}
         {children}
       </main>
+      <SiteFooter />
     </>
   );
 }

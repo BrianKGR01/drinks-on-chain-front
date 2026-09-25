@@ -60,20 +60,3 @@
   .decoration::after { width: 0.40625rem; }
 }
 
-.notice {
-  position: absolute;
-  bottom: 3.125vw;
-  left: 3.125vw;
-  margin: 0;
-  text-align: left;
-  font-family: var(--font-display);
-  font-size: 0.75rem;
-  font-style: italic;
-  letter-spacing: 0.05em;
-  line-height: 1.4;
-  color: var(--muted);
-  opacity: 0.8;
-}
-@media (max-width: 767px) {
-  .notice { position: static; text-align: center; margin-top: 3rem; }
-}
