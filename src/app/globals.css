@@ -231,19 +231,24 @@ a { color: inherit; text-decoration: none; }
 }
 .scene-parcel-label.is-visible { opacity: 1; transform: translateY(0); }
 
-/* Seats of the partner wineries on the "bodegas" map layer (WineryMarkers) */
+/* Seats of the partner wineries on the "bodegas" map layer: buttons in
+   hud/WineryMarkers, moved every frame by scene/WineryAnchors (transform) */
+.scene-winery-markers { position: fixed; inset: 0; z-index: 3; overflow: hidden; }
 .scene-winery-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   gap: 0.45rem;
   padding: 0.3rem;
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+  transition: opacity 0.7s var(--ease-out);
   pointer-events: none;
+  will-change: transform;
 }
-.scene-winery-marker.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+.scene-winery-marker.is-visible { opacity: 1; pointer-events: auto; }
 .scene-winery-marker__dot {
   width: 0.9rem;
   height: 0.9rem;

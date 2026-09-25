@@ -18,6 +18,8 @@
 
 .option {
   padding: 0.3em 1.1em 0.4em 1.5em;
+  text-transform: inherit;
+  letter-spacing: inherit;
   color: var(--ink-soft);
   transition: color 0.35s;
   white-space: nowrap;

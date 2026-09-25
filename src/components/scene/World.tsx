@@ -10,7 +10,7 @@ import { Parcels } from "./Parcels";
 import { Roads } from "./Roads";
 import { Terrain } from "./Terrain";
 import { Village } from "./Village";
-import { WineryMarkers } from "./WineryMarkers";
+import { WineryAnchors } from "./WineryAnchors";
 
 interface Props {
   village: VillageSpec;
@@ -34,7 +34,7 @@ export function World({ village, field }: Props) {
       <Forest village={village} field={field} />
       <Roads village={village} field={field} />
       <Clouds village={village} />
-      <WineryMarkers village={village} field={field} />
+      <WineryAnchors village={village} field={field} />
     </group>
   );
 }

@@ -159,7 +159,7 @@ function ParcelLabel({ village, field }: { village: VillageSpec; field: HeightFi
   const layer = useExperience((s) => s.layer);
   const framed = mode === "parcel" && index !== null ? (village.parcels[index] ?? null) : null;
   const hovered = hoveredId ? (village.parcels.find((p) => p.id === hoveredId) ?? null) : null;
-  // on the winery layer the seats carry the names (WineryMarkers)
+  // on the winery layer the seats carry the names (hud/WineryMarkers)
   const parcel = layer === "bodegas" ? null : (framed ?? (mode === "intro" ? null : hovered));
   // keep the last parcel mounted so the label can fade out
   const [last, setLast] = useState<ParcelSpec | null>(parcel);
