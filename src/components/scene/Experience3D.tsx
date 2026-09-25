@@ -3,6 +3,7 @@
 import * as THREE from "three";
 import { Component, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Canvas } from "@react-three/fiber";
+import { PerformanceMonitor } from "@react-three/drei";
 import { gsap } from "gsap";
 import { SCENE_TOKENS } from "@/lib/scene-contract";
 import { VILLAGES, getVillage } from "@/content/villages";
@@ -34,6 +35,11 @@ class SceneErrorBoundary extends Component<{ children: ReactNode }, { failed: bo
   }
 }
 
+/** Render at native resolution up to 1.5x; the monitor steps this down on slow machines. */
+const MAX_DPR = 1.5;
+const MIN_DPR = 0.85;
+const initialDpr = () => (typeof window === "undefined" ? 1 : Math.min(window.devicePixelRatio || 1, MAX_DPR));
+
 function supportsWebGL(): boolean {
   if (typeof window === "undefined") return false;
   try {
@@ -50,6 +56,7 @@ function supportsWebGL(): boolean {
  */
 export default function Experience3D({ className, active = true }: Experience3DProps) {
   const [webgl] = useState(supportsWebGL);
+  const [dpr, setDpr] = useState(initialDpr);
   const villageId = useExperience((s) => s.villageId);
   const [shownId, setShownId] = useState(villageId);
   const shownRef = useRef(villageId);
@@ -109,15 +116,22 @@ export default function Experience3D({ className, active = true }: Experience3DP
       >
         <Canvas
           style={{ position: "absolute", inset: 0, touchAction: "none" }}
-          dpr={[1, 1.5]}
+          dpr={dpr}
           flat
           frameloop={active ? "always" : "never"}
-          gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+          gl={{ antialias: true, alpha: false, stencil: false, powerPreference: "high-performance" }}
           camera={{ fov: 35, near: 4, far: 30000, position: [0, 1200, 1400] }}
           onCreated={({ gl }) => {
-            gl.setClearColor(new THREE.Color(SCENE_TOKENS.paper), 0);
+            gl.setClearColor(new THREE.Color(SCENE_TOKENS.paper), 1);
           }}
         >
+          {/* Frame-rate watchdog: lowers the pixel ratio in 0.25 steps while frames drop, raises it back when there is headroom. */}
+          <PerformanceMonitor
+            bounds={() => [45, 58]}
+            flipflops={4}
+            onDecline={() => setDpr((d) => Math.max(MIN_DPR, +(d - 0.25).toFixed(2)))}
+            onIncline={() => setDpr((d) => Math.min(initialDpr(), +(d + 0.25).toFixed(2)))}
+          />
           <Suspense fallback={null}>
             <CameraRig village={village} field={field} />
             <World key={village.id} village={village} field={field} />

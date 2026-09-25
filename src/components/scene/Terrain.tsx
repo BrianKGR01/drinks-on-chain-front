@@ -53,6 +53,8 @@ export function Terrain({ field }: Props) {
   );
 
   // A plain click on the ground (not a drag) releases the framed parcel.
+  // Only the flat paper plane listens: giving the displaced 131k-triangle
+  // terrain a handler would make R3F raycast it on every pointer move.
   const onGroundClick = (e: ThreeEvent<MouseEvent>) => {
     const s = useExperience.getState();
     if (e.delta > 6 || s.mode !== "parcel" || s.menuOpen || s.transitioning) return;
@@ -61,7 +63,7 @@ export function Terrain({ field }: Props) {
 
   return (
     <group>
-      <mesh geometry={geometry} material={material} frustumCulled={false} onClick={onGroundClick} />
+      <mesh geometry={geometry} material={material} frustumCulled={false} />
       <mesh rotation-x={-Math.PI / 2} position-y={-0.8} material={paperMaterial} onClick={onGroundClick}>
         <planeGeometry args={[field.extent * 16, field.extent * 16]} />
       </mesh>

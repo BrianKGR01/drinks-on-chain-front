@@ -1,22 +1,27 @@
+/* The whole entrance is CSS animation: it plays from the server-rendered
+   HTML, before any JavaScript, and needs no class toggling. */
+
 .intro {
   position: fixed;
   inset: 0;
   z-index: 30;
-  background: transparent;
+  background: transparent; /* the scene veil provides the paper */
+  transition: opacity 0.7s ease 0.15s;
 }
-.intro.leaving { pointer-events: none; }
+.intro.leaving { opacity: 0; pointer-events: none; }
+
+@keyframes gateFade { to { opacity: 1; } }
+@keyframes gateGrowY { to { transform: scaleY(1); } }
+@keyframes gateGrowX { to { transform: scaleX(1); } }
 
 /* Vine ornaments --------------------------------------------------- */
 .ornament {
   position: absolute;
   width: clamp(160px, 24vw, 380px);
   pointer-events: none;
-  opacity: 1;
-  transition: opacity 0.6s ease 0.1s;
 }
 .ornamentTopLeft { left: 1.5vw; top: -3vw; }
 .ornamentBottomRight { right: 3vw; bottom: 2vw; }
-.leaving .ornament { opacity: 0; }
 @media (max-width: 767px) {
   .ornament { width: 34vw; }
   .ornamentTopLeft { left: -4vw; top: -2vw; }
@@ -30,11 +35,8 @@
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
-  transition: opacity 2s ease 0.2s;
-  will-change: opacity;
+  animation: gateFade 2s ease 0.2s forwards;
 }
-.in .logo { opacity: 1; }
-.leaving .logo { opacity: 0; transition: opacity 0.6s ease 0.2s; }
 
 /* Statement -------------------------------------------------------- */
 .content {
@@ -60,13 +62,7 @@
 .contentInner :global(.space) { display: inline-block; width: 0.55em; }
 .contentInner :global(.letter) {
   opacity: 0;
-  transition: opacity 2s ease 0.2s;
-  will-change: opacity;
-}
-.in .contentInner :global(.letter) { opacity: 1; }
-.leaving .contentInner :global(.letter) {
-  opacity: 0;
-  transition: opacity 0.6s ease 0.2s;
+  animation: gateFade 2s ease 0.2s forwards;
 }
 
 /* Enter button ----------------------------------------------------- */
@@ -81,7 +77,6 @@
   overflow: visible;
 }
 .enter:focus-visible { outline: none; }
-.enter:focus-visible .label.black :global(.letter) { opacity: 1; }
 
 .label {
   position: absolute;
@@ -95,43 +90,17 @@
   font-size: 1.6vw;
   letter-spacing: 0.25em;
   display: block;
-  pointer-events: auto;
+  color: var(--accent);
+  transition: color 0.45s ease;
 }
 @media (max-width: 767px) { .label { font-size: 3.2vw; } }
-
 .label :global(.letter) {
   opacity: 0;
-  transition-property: opacity;
-  transition-duration: 0.45s;
-  will-change: opacity;
+  animation: gateFade 1.2s ease forwards;
+  animation-delay: calc(2s + var(--i, 0) * 0.08s);
 }
-
-.red { color: var(--accent); }
-.in .red :global(.letter) {
-  opacity: 1;
-  transition-duration: 2s;
-  transition-delay: calc(2s + var(--i) * 0.08s);
-}
-.black :global(.letter) {
-  opacity: 0;
-  transition-delay: calc(var(--i) * 0.07s);
-}
-
-.in .enter:hover .red :global(.letter) {
-  opacity: 0;
-  transition-duration: 0.45s;
-  transition-delay: calc(var(--i) * 0.07s);
-}
-.in .enter:hover .black :global(.letter) {
-  opacity: 1;
-  transition-delay: calc(0.3s + var(--i) * 0.07s);
-}
-
-.leaving .label :global(.letter) {
-  opacity: 0 !important;
-  transition-duration: 0.6s !important;
-  transition-delay: calc(var(--i) * 0.08s) !important;
-}
+.enter:hover .label,
+.enter:focus-visible .label { color: var(--ink); }
 
 /* The thin "descend" glyph under the label ------------------------ */
 .icon { position: absolute; top: 35px; left: 0; }
@@ -142,7 +111,8 @@
   background: var(--accent);
   transform-origin: 0 0;
   transform: scaleY(0);
-  transition: transform 1s ease 2.5s, background-color 0.4s;
+  animation: gateGrowY 1s ease 2.5s forwards;
+  transition: background-color 0.45s;
 }
 .bar2 {
   position: absolute;
@@ -151,14 +121,13 @@
   background: var(--accent);
   transform-origin: 50% 50%;
   transform: scaleX(0);
-  transition: transform 1s ease 3.3s, background-color 0.4s;
+  animation: gateGrowX 1s ease 3.3s forwards;
+  transition: background-color 0.45s;
 }
-.in .bar1 { transform: scaleY(1); }
-.in .bar2 { transform: scaleX(1); }
-.in .enter:hover .bar1,
-.in .enter:hover .bar2 { background: var(--ink); }
-.leaving .bar1 { transform: scaleY(0); transition: transform 0.6s ease 0.4s; }
-.leaving .bar2 { transform: scaleX(0); transition: transform 0.6s ease 0s; }
+.enter:hover .bar1,
+.enter:hover .bar2,
+.enter:focus-visible .bar1,
+.enter:focus-visible .bar2 { background: var(--ink); }
 
 /* Bottom navigation ------------------------------------------------ */
 .nav {
@@ -174,10 +143,8 @@
   padding: 3.125vw 4.6875% 3.125vw 5%;
   white-space: nowrap;
   opacity: 0;
-  transition: opacity 2s;
+  animation: gateFade 2s ease 0.6s forwards;
 }
-.in .nav { opacity: 1; }
-.leaving .nav { opacity: 0; transition: opacity 0.6s; }
 .langs { display: flex; margin-right: 2.5vw; }
 .langs button { margin-right: 1em; }
 
@@ -190,4 +157,9 @@
     height: 3em;
     font-size: 0.9375rem;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo, .contentInner :global(.letter), .label :global(.letter), .nav { animation-duration: 0.01ms; animation-delay: 0s; }
+  .bar1, .bar2 { animation-duration: 0.01ms; animation-delay: 0s; }
 }

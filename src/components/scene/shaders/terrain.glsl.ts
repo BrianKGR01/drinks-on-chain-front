@@ -1,3 +1,4 @@
+import { MAX_CLOUDS } from "../lib/uniforms";
 import { GLSL_FADE, GLSL_HATCH, GLSL_NOISE } from "./common.glsl";
 
 export const TERRAIN_VERT = /* glsl */ `
@@ -21,7 +22,7 @@ uniform vec3 uInk;
 uniform vec3 uLight;
 uniform float uDpr;
 uniform float uTime;
-uniform vec4 uClouds[8];
+uniform vec4 uClouds[${MAX_CLOUDS}];
 varying vec3 vWorldPos;
 varying vec3 vNormal;
 
@@ -38,19 +39,19 @@ void main() {
   float lit = smoothstep(flatFacing + 0.02, flatFacing + 0.30, facing);
 
   // large-scale organic variation so hatch appears in patches, like an engraver's hand
-  float variation = fbm(p * 0.0035 + 3.7) - 0.5;
-  float fineVar = fbm(p * 0.02 + 11.0) - 0.5;
+  float variation = fbm3(p * 0.0035 + 3.7) - 0.5;
+  float fineVar = vnoise(p * 0.02 + 11.0) - 0.5;
 
-  // cloud shadows (faked from the drifting cloud planes)
+  // cloud shadows (faked from the drifting cloud planes); one shared noise
+  // term for the ragged edge instead of a 4-octave fbm per cloud
   float cloud = 0.0;
-  for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < ${MAX_CLOUDS}; i++) {
     vec4 c = uClouds[i];
     if (c.z <= 0.0) continue;
     float d = distance(p, c.xy);
-    float m = smoothstep(c.z, c.z * 0.25, d) * c.w;
-    m *= 0.55 + 0.45 * fbm(p * 0.006 + c.xy * 0.001 + uTime * 0.01);
-    cloud = max(cloud, m);
+    cloud = max(cloud, smoothstep(c.z, c.z * 0.25, d) * c.w);
   }
+  if (cloud > 0.0) cloud *= 0.55 + 0.45 * fbm2(p * 0.006 + uTime * 0.01);
 
   // shading tone: shadow side, organic variation, cloud wash (slope adds a little)
   float darkness = shade * 0.6 + min(slope * 1.2, 0.2) * (1.0 - 0.7 * lit) + variation * 0.38 + fineVar * 0.14 + cloud * 0.40;
@@ -60,14 +61,15 @@ void main() {
   float base = 6.5;
 
   // 1) form lines: follow the relief (constant height), denser as the slope steepens
-  float ty = vWorldPos.y + (vnoise(p * 0.03) - 0.5) * 1.6 + (vnoise(p * 0.2) - 0.5) * 0.25;
+  float reliefWob = vnoise(p * 0.03) - 0.5; // shared by the form lines and the contours
+  float ty = vWorldPos.y + reliefWob * 1.6;
   float formBreaks = smoothstep(0.22, 0.42, vnoise(p * 0.035 + 5.0));
   float form = hatch(ty, 3.2, 0.065 + 0.05 * darkness, minPx) * formAmt * mix(1.0, formBreaks, 0.6);
 
   // 2) straight hachure shading on the shadow side (fixed direction, hand wobble)
   vec2 dir = normalize(vec2(0.82, 0.57));
   vec2 perp = vec2(-dir.y, dir.x);
-  float wobble = (vnoise(p * 0.045) - 0.5) * 2.6 + (vnoise(p * 0.3) - 0.5) * 0.5;
+  float wobble = (vnoise(p * 0.045) - 0.5) * 2.6;
   float t1 = dot(p, perp) + wobble;
   float along = dot(p, dir);
   float breaks = smoothstep(0.28, 0.5, vnoise(vec2(along * 0.06, t1 * 0.35)));
@@ -84,14 +86,14 @@ void main() {
   // faint topographic contours every 10 m
   float cy = vWorldPos.y;
   float cpx = max(fwidth(cy), 1e-5);
-  float cd = lineDist(cy + (vnoise(p * 0.08) - 0.5) * 0.6, 10.0);
+  float cd = lineDist(cy + reliefWob * 0.6, 10.0);
   float contour = (1.0 - smoothstep(cpx * 0.5, cpx * 1.5, cd)) * smoothstep(0.006, 0.045, slope) * 0.22;
 
   float vis = inkVisibility(vWorldPos);
   ink = clamp(ink + contour, 0.0, 1.0) * vis;
 
   // paper: grain + a whisper of wash in shadow / under clouds
-  float grain = vnoise(p * 1.7) * 0.6 + vnoise(p * 0.45) * 0.4;
+  float grain = vnoise(p * 1.7);
   float wash = (0.30 * shade + 0.28 * cloud) * vis;
   vec3 paper = mix(uPaper, uPaperShade, clamp(wash + grain * 0.10, 0.0, 1.0));
   vec3 col = mix(paper, uInk, ink * 0.86);

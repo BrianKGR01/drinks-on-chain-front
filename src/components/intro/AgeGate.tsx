@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState, useSyncExternalStore } from "react";
 import { Logo } from "@/components/brand/Logo";
 import { LetterSplit } from "@/components/ui/LetterSplit";
 import { GlassBottleOrnament } from "@/components/intro/GlassBottleOrnament";
@@ -10,13 +10,16 @@ import { LANGS, UI } from "@/content/i18n";
 import { useExperience } from "@/store/experience";
 import styles from "./AgeGate.module.css";
 
-const LEAVE_MS = 1100;
+const LEAVE_MS = 900;
+
+const subscribe = (cb: () => void) => useExperience.subscribe(cb);
+/** True once the visitor entered in this session. Server snapshot: false. */
+const useEntered = () => useSyncExternalStore(subscribe, () => useExperience.getState().entered, () => false);
 
 /**
- * Full-screen age confirmation shown before the experience.
- * Replicates the reference choreography: logo + statement fade in over 2 s,
- * the "Entrar" letters follow, then the thin red bar draws down. Hovering the
- * button crossfades the red letters to black; entering fades everything out.
+ * Full-screen age confirmation shown before the experience. The entrance
+ * choreography (logo, statement, "Entrar", bar) is pure CSS animation, so it
+ * plays from the server HTML even before React hydrates; JS only leaves it.
  */
 export function AgeGate() {
   const lang = useExperience((s) => s.lang);
@@ -24,16 +27,9 @@ export function AgeGate() {
   const enter = useExperience((s) => s.enter);
   const t = UI[lang];
 
-  const [shown, setShown] = useState(false);
+  const entered = useEntered();
   const [leaving, setLeaving] = useState(false);
-  // Already entered on mount (e.g. coming back from a content page): skip the gate.
-  const [gone, setGone] = useState(() => useExperience.getState().entered);
-
-  useEffect(() => {
-    // A timer (not rAF) so the reveal also runs when the tab is throttled.
-    const id = window.setTimeout(() => setShown(true), 40);
-    return () => window.clearTimeout(id);
-  }, []);
+  const [gone, setGone] = useState(false);
 
   const handleEnter = useCallback(() => {
     if (leaving) return;
@@ -42,11 +38,11 @@ export function AgeGate() {
     window.setTimeout(() => setGone(true), LEAVE_MS);
   }, [enter, leaving]);
 
-  if (gone) return null;
+  if (gone || (entered && !leaving)) return null;
 
   return (
     <div
-      className={`${styles.intro} ${shown ? styles.in : ""} ${leaving ? styles.leaving : ""}`}
+      className={`${styles.intro} ${leaving ? styles.leaving : ""}`}
       role="dialog"
       aria-modal="true"
       aria-label={t.ageGateAria}
@@ -69,10 +65,7 @@ export function AgeGate() {
       </div>
 
       <button type="button" className={styles.enter} onClick={handleEnter} autoFocus>
-        <span className={`${styles.label} ${styles.red}`} aria-hidden="true">
-          <LetterSplit text={t.enter} />
-        </span>
-        <span className={`${styles.label} ${styles.black}`}>
+        <span className={styles.label}>
           <LetterSplit text={t.enter} />
         </span>
         <span className={styles.icon} aria-hidden="true">
