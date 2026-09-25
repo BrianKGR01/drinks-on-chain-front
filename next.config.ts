@@ -8,11 +8,13 @@ const LANDING = (process.env.NEXT_PUBLIC_URL_LANDING ?? (isDev ? "http://localho
  * Content Security Policy without nonces: the site is static and holds no
  * user data, and a nonce would force every page to render on the server.
  * Inline scripts stay allowed for Next's bootstrap; every other source is
- * this origin only. `blob:` covers WebGL textures and the audio worklet.
+ * this origin only (Vercel Web Analytics is same-origin; its debug script
+ * comes from va.vercel-scripts.com in development only). `blob:` covers
+ * WebGL textures.
  */
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval' https://va.vercel-scripts.com" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self'",

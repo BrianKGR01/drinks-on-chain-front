@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ParcelPage } from "@/components/pages/ParcelPage";
 import { VILLAGES, getParcel } from "@/content/villages";
+import { pageMetadata } from "@/lib/site";
 
 export function generateStaticParams() {
   return VILLAGES.flatMap((v) => v.parcels.map((p) => ({ village: v.slug, slug: p.slug })));
@@ -13,10 +14,11 @@ export async function generateMetadata({
   const { village, slug } = await params;
   const found = getParcel(village, slug);
   if (!found) return {};
-  return {
+  return pageMetadata({
+    path: `/valles/${found.village.slug}/${found.parcel.slug}`,
     title: `${found.parcel.name} · ${found.village.name.es}`,
     description: `Parcela ${found.parcel.name} a ${found.parcel.altitude} m s.n.m. en el ${found.village.name.es}.`,
-  };
+  });
 }
 
 export default async function Page({ params }: PageProps<"/valles/[village]/[slug]">) {

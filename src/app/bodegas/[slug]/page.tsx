@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { WineryPage } from "@/components/network/WineryPage";
 import { WINERIES, getWinery } from "@/content/network";
+import { pageMetadata } from "@/lib/site";
 
 export const dynamicParams = false;
 
@@ -13,11 +14,7 @@ export async function generateMetadata({ params }: PageProps<"/bodegas/[slug]">)
   const { slug } = await params;
   const winery = getWinery(slug);
   if (!winery) return {};
-  return {
-    title: winery.name,
-    description: winery.summary.es,
-    alternates: { canonical: `/bodegas/${winery.slug}` },
-  };
+  return pageMetadata({ path: `/bodegas/${winery.slug}`, title: winery.name, description: winery.summary.es });
 }
 
 export default async function Page({ params }: PageProps<"/bodegas/[slug]">) {
