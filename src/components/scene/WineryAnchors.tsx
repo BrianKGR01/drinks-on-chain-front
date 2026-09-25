@@ -25,6 +25,8 @@ export function WineryAnchors({ village, field }: { village: VillageSpec; field:
   );
 
   useFrame(({ camera, size }) => {
+    // CameraRig already refreshed it this frame; cheap insurance against frame order.
+    camera.updateMatrixWorld();
     for (const a of anchors) {
       const el = wineryMarkerEls.get(a.id);
       if (!el) continue;

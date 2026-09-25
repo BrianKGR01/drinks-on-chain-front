@@ -333,6 +333,10 @@ export function CameraRig({ village, field }: Props) {
     );
     cam.up.set(0, 1, 0);
     cam.lookAt(t);
+    // Refresh the matrices now, not at render time: anything that projects
+    // world points to the screen in this frame (seat markers, labels) must
+    // see this pose, or it trails one frame behind and shakes while turning.
+    cam.updateMatrixWorld();
 
     shared.uCamPos.value.copy(cam.position);
     // top-down views see the ground at ~uniform distance: push the fog out there
