@@ -33,6 +33,7 @@ export function AgeGate() {
 
   const handleEnter = useCallback(() => {
     if (leaving) return;
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     setLeaving(true);
     enter();
     window.setTimeout(() => setGone(true), LEAVE_MS);
@@ -42,7 +43,11 @@ export function AgeGate() {
 
   return (
     <div
-      className={`${styles.intro} ${leaving ? styles.leaving : ""}`}
+      // gate-root: globals.css locks document scrolling while this is mounted
+      className={`gate-root ${styles.intro} ${leaving ? styles.leaving : ""}`}
+      // wheel and touch gestures stop here: nothing underneath (page or camera) may move
+      onWheel={(e) => e.stopPropagation()}
+      onTouchMove={(e) => e.stopPropagation()}
       role="dialog"
       aria-modal="true"
       aria-label={t.ageGateAria}
