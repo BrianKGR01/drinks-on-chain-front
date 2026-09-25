@@ -9,8 +9,9 @@ import pickupData from "./data/puntos-de-recojo.json";
  * The data is the test catalogue of the ecosystem (docs/08-datos-de-prueba.md
  * §3) with the same identifiers as `@doc/mocks`, so this site, the
  * Marketplace and the Backoffice show the same network. Every winery here is
- * fictional; none has an agreement. When the mocks package exists, these
- * JSON files are replaced by its fixtures.
+ * fictional; none has an agreement. The main landing keeps a copy of this
+ * file and of data/*.json (edit here, copy there). When the mocks package
+ * exists, these JSON files are replaced by its fixtures.
  */
 
 /** Place of a winery in the network (never a real commercial claim while the network is a test). */
