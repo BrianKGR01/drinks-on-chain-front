@@ -63,6 +63,12 @@ Convenciones: trabajo en `dev`, Conventional Commits, PR `dev → main` al cerra
 - [x] Tamaños de texto legibles sobre la raíz fluida; contraste AA en botones dorados · 25-09-2026
 - [x] Vercel Web Analytics (sin cookies). **Acción manual pendiente**: activarlo en el panel del proyecto · 25-09-2026
 
+## Correcciones tras la revisión del cliente (25-09-2026)
+
+- [x] Las sedes de las bodegas ya no tiemblan al girar el mapa (matrices de cámara actualizadas en el mismo frame) · 25-09-2026
+- [x] "Volver al valle" y el conmutador Parcelas / Bodegas ya no se superponen: comparten el hueco superior · 25-09-2026
+- [ ] Grosor de trazo del mapa en móvil: pendiente de decisión (opiniones divididas)
+
 ## Mediciones (Lighthouse 12, móvil, build de producción local, 25-09-2026)
 
 | Página | Rendimiento | Accesibilidad | Buenas prácticas | SEO |
