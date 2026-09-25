@@ -282,6 +282,12 @@ a { color: inherit; text-decoration: none; }
 .scene-winery-marker:focus-visible .scene-winery-marker__name,
 .scene-winery-marker.is-hover .scene-winery-marker__name,
 .scene-winery-marker.is-active .scene-winery-marker__name { color: var(--accent-deep); }
+/* phones: seats are dots; only the chosen one keeps its name (the caption below names it too) */
+@media (max-width: 767px) {
+  .scene-winery-marker { padding: 0.6rem; }
+  .scene-winery-marker__name { display: none; font-size: 0.6875rem; letter-spacing: 0.2em; }
+  .scene-winery-marker.is-active .scene-winery-marker__name { display: block; }
+}
 
 /* While the age gate is mounted the document does not scroll: the visitor
    always enters at the top. Pure CSS, so it holds before hydration. */

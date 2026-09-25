@@ -119,7 +119,7 @@ export function JoinForm({ lang, privacyHref }: JoinFormProps) {
         <h3>{c.doneTitle}</h3>
         <p>{c.done(sentBy)}</p>
         <p>
-          {c.doneMail} <a href={`mailto:${MAIL[kind]}`} className={styles.textLink}>{MAIL[kind]}</a>
+          {c.doneMail} <a href={`mailto:${MAIL[kind]}`} className={`${styles.textLink} ${styles.mail}`}>{MAIL[kind]}</a>
         </p>
         <p style={{ marginTop: "2rem" }}>
           <button type="button" className={styles.buttonGhost} onClick={() => setSentBy(null)}>

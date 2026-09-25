@@ -48,6 +48,8 @@
   transition: transform 0.6s var(--ease-in-out);
 }
 
+/* phones: centred between MENU and MAPA, which sit at 1.5rem */
 @media (max-width: 767px) {
-  .switch { top: auto; bottom: 7.5rem; font-size: 11px; letter-spacing: 0.3em; }
+  .switch { top: 1.5rem; font-size: 10px; letter-spacing: 0.2em; }
+  .option { padding: 0.5em 0.6em 0.6em 0.8em; }
 }
