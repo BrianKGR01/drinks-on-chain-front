@@ -26,7 +26,7 @@ export function DiscoverCta({ hidden = false }: { hidden?: boolean }) {
     <div className={`${styles.wrap} ${visible ? styles.visible : ""}`} aria-hidden={!visible}>
       {framed && parcel ? (
         <Link
-          href={`/parcelas/${village.slug}/${parcel.slug}`}
+          href={`/valles/${village.slug}/${parcel.slug}`}
           className={styles.cta}
           tabIndex={visible ? 0 : -1}
         >

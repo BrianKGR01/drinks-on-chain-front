@@ -9,7 +9,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: PageProps<"/parcelas/[village]/[slug]">): Promise<Metadata> {
+}: PageProps<"/valles/[village]/[slug]">): Promise<Metadata> {
   const { village, slug } = await params;
   const found = getParcel(village, slug);
   if (!found) return {};
@@ -19,7 +19,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params }: PageProps<"/parcelas/[village]/[slug]">) {
+export default async function Page({ params }: PageProps<"/valles/[village]/[slug]">) {
   const { village, slug } = await params;
   const found = getParcel(village, slug);
   if (!found) notFound();

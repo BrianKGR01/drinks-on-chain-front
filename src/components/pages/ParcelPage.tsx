@@ -181,7 +181,7 @@ export function ParcelPage({ village, parcel, next }: ParcelPageProps) {
       ) : null}
 
       <DiscoverFooter
-        href={`/parcelas/${village.slug}/${next.slug}`}
+        href={`/valles/${village.slug}/${next.slug}`}
         caption={next.name}
         prepend={t.nextParcel}
       />
