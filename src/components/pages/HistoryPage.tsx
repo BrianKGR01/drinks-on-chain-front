@@ -38,7 +38,7 @@ const COPY = {
       },
     ],
     highlight: "Una botella es un lugar, un año y una familia. Nosotros solo nos encargamos de que no se pierda en el camino.",
-    next: "Los vinos",
+    next: "Las bodegas",
   },
   en: {
     title: "History",
@@ -69,7 +69,7 @@ const COPY = {
       },
     ],
     highlight: "A bottle is a place, a year and a family. We only make sure none of it gets lost on the way.",
-    next: "The wines",
+    next: "The wineries",
   },
 } as const;
 
@@ -148,7 +148,7 @@ export function HistoryPage() {
         );
       })}
 
-      <DiscoverFooter href="/vinos" caption={c.next} prepend={t.discover} />
+      <DiscoverFooter href="/bodegas" caption={c.next} prepend={t.discover} />
     </PageShell>
   );
 }

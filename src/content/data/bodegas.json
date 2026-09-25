@@ -1,0 +1,210 @@
+[
+  {
+    "id": "win_altos",
+    "slug": "altos-de-calamuchita",
+    "name": "Bodega Altos de Calamuchita",
+    "status": "socia",
+    "villageId": "tarija",
+    "town": "Santa Ana · Tarija",
+    "founded": 2009,
+    "hq": [-150, 200],
+    "parcelIds": ["t13", "t03"],
+    "varieties": ["Tannat", "Moscatel de Alejandría", "Cabernet Sauvignon"],
+    "summary": {
+      "es": "Bodega familiar en las lomas de Santa Ana, con viñedos en Santa Ana la Nueva y Calamuchita. Registra cada lote en el ERP desde la vendimia.",
+      "en": "Family winery on the Santa Ana hills, with vineyards in Santa Ana la Nueva and Calamuchita. It records every lot in the ERP from harvest onwards."
+    },
+    "story": {
+      "es": [
+        "La bodega nació en 2009 cuando tres hermanos replantaron el viñedo de su abuelo con Tannat y Moscatel de Alejandría, las dos cepas que mejor responden a los 1.900 metros de Santa Ana.",
+        "Vendimian a mano en marzo, fermentan en tanques de acero con temperatura controlada y crían el Tannat doce meses en barricas de roble francés de segundo uso.",
+        "Fue la primera bodega de la red en registrar un lote completo, de la parcela al embotellado, y en ofrecerlo a precio de bodega."
+      ],
+      "en": [
+        "The winery was born in 2009 when three siblings replanted their grandfather's vineyard with Tannat and Muscat of Alexandria, the two varieties that best answer Santa Ana's 1,900 metres.",
+        "They harvest by hand in March, ferment in temperature-controlled steel tanks and age the Tannat twelve months in second-use French oak.",
+        "It was the first winery of the network to record a complete lot, from parcel to bottling, and to offer it at winery price."
+      ]
+    },
+    "products": [
+      { "id": "prd_altos_tannat_24", "name": "Tannat Reserva 2024", "kind": "vino", "variety": "Tannat", "vintage": 2024 },
+      { "id": "prd_altos_moscatel_25", "name": "Moscatel Blanco 2025", "kind": "vino", "variety": "Moscatel de Alejandría", "vintage": 2025 }
+    ],
+    "lots": [
+      {
+        "id": "lot_2024_tan_01",
+        "productId": "prd_altos_tannat_24",
+        "status": "tokenizado",
+        "bottles": 1800,
+        "history": [
+          { "status": "origen", "at": "2024-01-18" },
+          { "status": "vendimia", "at": "2024-03-11" },
+          { "status": "fermentacion", "at": "2024-03-12" },
+          { "status": "crianza", "at": "2024-04-20" },
+          { "status": "embotellado", "at": "2025-05-02" },
+          { "status": "listo", "at": "2025-05-03" },
+          { "status": "tokenizado", "at": "2025-05-20" }
+        ]
+      },
+      {
+        "id": "lot_2025_mos_01",
+        "productId": "prd_altos_moscatel_25",
+        "status": "listo",
+        "bottles": 2400,
+        "history": [
+          { "status": "origen", "at": "2025-01-15" },
+          { "status": "vendimia", "at": "2025-02-26" },
+          { "status": "fermentacion", "at": "2025-02-27" },
+          { "status": "embotellado", "at": "2025-09-10" },
+          { "status": "listo", "at": "2025-09-12" }
+        ]
+      }
+    ],
+    "pickupPointIds": ["pp_altos", "pp_lacava"],
+    "erpAccess": true
+  },
+  {
+    "id": "win_cintiviejo",
+    "slug": "destileria-cinti-viejo",
+    "name": "Destilería Cinti Viejo",
+    "status": "socia",
+    "villageId": "cinti",
+    "town": "Camargo · Chuquisaca",
+    "founded": 1968,
+    "hq": [-10, 80],
+    "parcelIds": ["c01", "c05"],
+    "varieties": ["Moscatel de Alejandría", "Negra Criolla", "Vischoqueña"],
+    "summary": {
+      "es": "Destilería del cañón de Cinti, con parrales de Moscatel de Alejandría en Camargo y Palca Grande. Singani de Denominación de Origen y un vino patrimonial de cepas criollas.",
+      "en": "Distillery in the Cinti canyon, with Muscat of Alexandria arbours in Camargo and Palca Grande. Designation-of-origin singani and a heritage wine from criolla varieties."
+    },
+    "story": {
+      "es": [
+        "Tres generaciones han destilado en la misma casa de Camargo, a 2.400 metros, con alambiques de cobre que siguen separando a mano cabeza, corazón y cola.",
+        "Su Moscatel de Alejandría crece en parrales sobre molles, como hace dos siglos, y cumple los requisitos de la Denominación de Origen Singani: cepa única y más de 1.600 metros de altitud.",
+        "En la red registra la destilación y el reposo de cada lote; el Gran Reserva no puede embotellarse hasta cumplir seis meses de reposo, y el candado lo impone el propio ERP."
+      ],
+      "en": [
+        "Three generations have distilled in the same house in Camargo, at 2,400 metres, with copper stills that still separate heads, heart and tails by hand.",
+        "Its Muscat of Alexandria grows on arbours over molle trees, as it did two centuries ago, and meets the Singani Designation of Origin rules: a single variety and more than 1,600 metres of altitude.",
+        "On the network it records the distillation and rest of every lot; the Gran Reserva cannot be bottled before six months of rest, and the ERP itself enforces the lock."
+      ]
+    },
+    "products": [
+      { "id": "prd_cv_sgr_26", "name": "Singani Gran Reserva 2026", "kind": "singani", "variety": "Moscatel de Alejandría", "vintage": 2026 },
+      { "id": "prd_cv_scl_25", "name": "Singani Clásico 2025", "kind": "singani", "variety": "Moscatel de Alejandría", "vintage": 2025 },
+      { "id": "prd_cv_pat_24", "name": "Vino Patrimonial 2024", "kind": "vino", "variety": "Negra Criolla", "vintage": 2024 }
+    ],
+    "lots": [
+      {
+        "id": "lot_2026_sgr_01",
+        "productId": "prd_cv_sgr_26",
+        "status": "reposo",
+        "bottles": null,
+        "unlockAt": "2026-10-13",
+        "history": [
+          { "status": "origen", "at": "2026-01-12" },
+          { "status": "vendimia", "at": "2026-03-04" },
+          { "status": "fermentacion", "at": "2026-03-06" },
+          { "status": "destilacion", "at": "2026-04-15" },
+          { "status": "reposo", "at": "2026-04-16" }
+        ]
+      },
+      {
+        "id": "lot_2025_scl_01",
+        "productId": "prd_cv_scl_25",
+        "status": "tokenizado",
+        "bottles": 3000,
+        "history": [
+          { "status": "origen", "at": "2025-01-10" },
+          { "status": "vendimia", "at": "2025-03-02" },
+          { "status": "fermentacion", "at": "2025-03-04" },
+          { "status": "destilacion", "at": "2025-04-08" },
+          { "status": "reposo", "at": "2025-04-09" },
+          { "status": "embotellado", "at": "2025-08-20" },
+          { "status": "listo", "at": "2025-08-21" },
+          { "status": "tokenizado", "at": "2025-09-05" }
+        ]
+      },
+      {
+        "id": "lot_2024_pat_01",
+        "productId": "prd_cv_pat_24",
+        "status": "crianza",
+        "bottles": null,
+        "history": [
+          { "status": "origen", "at": "2024-01-22" },
+          { "status": "vendimia", "at": "2024-03-15" },
+          { "status": "fermentacion", "at": "2024-03-16" },
+          { "status": "crianza", "at": "2024-05-02" }
+        ]
+      }
+    ],
+    "pickupPointIds": ["pp_cintiviejo", "pp_vinotecasur", "pp_equipetrol"],
+    "erpAccess": true
+  },
+  {
+    "id": "win_guadalquivir",
+    "slug": "vinedos-del-guadalquivir",
+    "name": "Viñedos del Guadalquivir",
+    "status": "en-conversacion",
+    "villageId": "tarija",
+    "town": "Valle de la Concepción · Tarija",
+    "founded": 1994,
+    "hq": [-300, 290],
+    "parcelIds": ["t02", "t12"],
+    "varieties": ["Syrah", "Malbec", "Cabernet Sauvignon"],
+    "summary": {
+      "es": "Viñedos junto al río en el Valle de la Concepción y La Angostura. Está preparando su ingreso a la red: sus lotes aún no se registran en el ERP.",
+      "en": "Riverside vineyards in Valle de la Concepción and La Angostura. It is preparing to join the network: its lots are not yet recorded in the ERP."
+    },
+    "story": {
+      "es": [
+        "Una bodega mediana que vendimia Syrah y Malbec en las terrazas del Camacho y los ensambla en un blend de altura.",
+        "Mientras se cierra el acuerdo, su ficha muestra solo información pública; sus productos se podrán adquirir cuando registre su primer lote."
+      ],
+      "en": [
+        "A mid-sized winery that harvests Syrah and Malbec on the Camacho terraces and blends them into a high-altitude red.",
+        "While the agreement is being closed its profile shows public information only; its wines will be available once it records its first lot."
+      ]
+    },
+    "products": [
+      { "id": "prd_gq_syrah_24", "name": "Syrah 2024", "kind": "vino", "variety": "Syrah", "vintage": 2024 },
+      { "id": "prd_gq_blend_23", "name": "Blend de Altura 2023", "kind": "vino", "variety": "Syrah · Malbec", "vintage": 2023 }
+    ],
+    "lots": [],
+    "pickupPointIds": [],
+    "erpAccess": false
+  },
+  {
+    "id": "win_casauriondo",
+    "slug": "casa-uriondo",
+    "name": "Casa Uriondo",
+    "status": "referencia",
+    "villageId": "tarija",
+    "town": "Colón Norte · Uriondo",
+    "founded": 1952,
+    "hq": [300, -300],
+    "parcelIds": ["t11"],
+    "varieties": ["Moscatel de Alejandría"],
+    "summary": {
+      "es": "Destilería de referencia del distrito de Colón. Aparece en el mapa por contexto histórico; no tiene relación comercial con la red.",
+      "en": "Reference distillery of the Colón district. It appears on the map for historical context; it has no commercial relationship with the network."
+    },
+    "story": {
+      "es": [
+        "Una de las casas que dieron forma al singani de altura del valle de Uriondo.",
+        "Las bodegas de referencia se muestran para situar la historia del valle: no tienen lotes registrados ni productos a la venta en la red."
+      ],
+      "en": [
+        "One of the houses that shaped the high-altitude singani of the Uriondo valley.",
+        "Reference wineries are shown to place the valley's history: they have no recorded lots and no products for sale on the network."
+      ]
+    },
+    "products": [
+      { "id": "prd_cu_sal_25", "name": "Singani de Altura 2025", "kind": "singani", "variety": "Moscatel de Alejandría", "vintage": 2025 }
+    ],
+    "lots": [],
+    "pickupPointIds": [],
+    "erpAccess": false
+  }
+]

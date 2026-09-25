@@ -4,9 +4,11 @@ import { useEffect } from "react";
 import { AgeGate } from "@/components/intro/AgeGate";
 import { BackToValley } from "@/components/hud/BackToValley";
 import { DiscoverCta } from "@/components/hud/DiscoverCta";
+import { LayerSwitch } from "@/components/hud/LayerSwitch";
 import { MapCta } from "@/components/hud/MapCta";
 import { ParcelNavigator } from "@/components/hud/ParcelNavigator";
 import { SiteChrome } from "@/components/hud/SiteChrome";
+import { WineryMarkers } from "@/components/hud/WineryMarkers";
 import { useExperience } from "@/store/experience";
 
 /**
@@ -31,6 +33,8 @@ export function HomeExperience() {
       <AgeGate />
       <SiteChrome hideCta={!entered} />
       <MapCta hidden={hudHidden} />
+      <WineryMarkers hidden={hudHidden} />
+      <LayerSwitch hidden={hudHidden} />
       <BackToValley hidden={hudHidden} />
       <ParcelNavigator hidden={hudHidden} />
       <DiscoverCta hidden={hudHidden} />

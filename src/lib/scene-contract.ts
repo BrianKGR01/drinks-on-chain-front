@@ -81,7 +81,11 @@ export type SceneMode =
   | "intro" // age gate visible, slow ambient drift, no interaction
   | "free" // orbit with scroll / drag, parcels hoverable
   | "parcel" // camera framed on the active parcel
+  | "winery" // camera framed on the parcels and seat of the active winery
   | "map"; // top-down "carte" view, north up, compass visible
+
+/** What the map shows on top of the valley: the vineyard parcels or the partner wineries. */
+export type MapLayer = "parcelas" | "bodegas";
 
 export interface SceneEvents {
   /** Called when a parcel mesh is clicked. */

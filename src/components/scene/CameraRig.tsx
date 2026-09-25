@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { gsap } from "gsap";
 import type { ParcelSpec, SceneMode, VillageSpec } from "@/lib/scene-contract";
+import { getWinery, type Winery } from "@/content/network";
 import { useExperience } from "@/store/experience";
 import { clamp } from "./lib/prng";
 import type { HeightField } from "./lib/terrain";
@@ -47,12 +48,25 @@ const POLAR_MIN = 25 * DEG;
 const POLAR_MAX = 65 * DEG;
 const MAP_RADIUS_FACTOR = 1.25;
 
+/** Centre and reach of a winery on the map: its parcels plus its seat. */
+function wineryFrame(village: VillageSpec, winery: Winery) {
+  const pts: Array<[number, number, number]> = village.parcels
+    .filter((p) => winery.parcelIds.includes(p.id))
+    .map((p) => [p.center[0], p.center[1], Math.max(p.size[0], p.size[1]) / 2]);
+  pts.push([winery.hq[0], winery.hq[1], 40]);
+  const cx = pts.reduce((a, p) => a + p[0], 0) / pts.length;
+  const cz = pts.reduce((a, p) => a + p[1], 0) / pts.length;
+  const reach = Math.max(...pts.map(([x, z, r]) => Math.hypot(x - cx, z - cz) + r));
+  return { cx, cz, reach };
+}
+
 function goalFor(
   mode: SceneMode,
   village: VillageSpec,
   field: HeightField,
   parcel: ParcelSpec | null,
   currentAzimuth: number,
+  winery: Winery | null,
 ): Pose {
   const E = village.extent;
   const cy = field.getHeight(0, 0);
@@ -71,6 +85,18 @@ function goalFor(
         tz: pz,
       };
     }
+    case "winery": {
+      if (!winery || winery.villageId !== village.id) return { radius: 1.05 * E, polar: 52 * DEG, azimuth: currentAzimuth, tx: 0, ty: cy, tz: 0 };
+      const { cx, cz, reach } = wineryFrame(village, winery);
+      return {
+        radius: clamp(reach * 2.6, 0.5 * E, 1.1 * E),
+        polar: 46 * DEG,
+        azimuth: currentAzimuth,
+        tx: cx,
+        ty: field.getHeight(cx, cz),
+        tz: cz,
+      };
+    }
     case "map":
       return { radius: MAP_RADIUS_FACTOR * E, polar: 2 * DEG, azimuth: 0, tx: 0, ty: cy, tz: 0 };
     default:
@@ -82,6 +108,7 @@ const TWEEN: Record<SceneMode, { duration: number; ease: string }> = {
   intro: { duration: 1.6, ease: "power2.inOut" },
   free: { duration: 2.5, ease: "power2.inOut" },
   parcel: { duration: 2.0, ease: "power3.inOut" },
+  winery: { duration: 2.2, ease: "power3.inOut" },
   map: { duration: 1.8, ease: "power2.inOut" },
 };
 
@@ -94,6 +121,7 @@ export function CameraRig({ village, field }: Props) {
   const gl = useThree((s) => s.gl);
   const mode = useExperience((s) => s.mode);
   const activeIndex = useExperience((s) => s.activeParcelIndex);
+  const activeWineryId = useExperience((s) => s.activeWineryId);
 
   const pose = useRef<Pose>({ radius: village.extent * 1.6, polar: 35 * DEG, azimuth: 0.7, tx: 0, ty: 0, tz: 0 });
   const user = useRef<UserOffsets>({ az: 0, azT: 0, pol: 0, polT: 0, zoom: 1, zoomT: 1, px: 0, pxT: 0, pz: 0, pzT: 0 });
@@ -128,7 +156,8 @@ export function CameraRig({ village, field }: Props) {
     u.pz = u.pzT = 0;
 
     const parcel = activeIndex !== null ? (village.parcels[activeIndex] ?? null) : null;
-    const goal = goalFor(mode, village, field, parcel, p.azimuth);
+    const winery = activeWineryId ? (getWinery(activeWineryId) ?? null) : null;
+    const goal = goalFor(mode, village, field, parcel, p.azimuth, winery);
     let dAz = goal.azimuth - p.azimuth;
     dAz = Math.atan2(Math.sin(dAz), Math.cos(dAz));
     goal.azimuth = p.azimuth + dAz;
@@ -153,7 +182,7 @@ export function CameraRig({ village, field }: Props) {
     return () => {
       tween.current?.kill();
     };
-  }, [mode, activeIndex, village, field]);
+  }, [mode, activeIndex, activeWineryId, village, field]);
 
   useEffect(() => {
     shared.uExtent.value = village.extent;
@@ -180,7 +209,7 @@ export function CameraRig({ village, field }: Props) {
         u.pzT = clamp(u.pzT, -E, E);
         u.azT = 0;
         u.polT = 0;
-      } else if (m === "parcel") {
+      } else if (m === "parcel" || m === "winery") {
         u.azT = clamp(u.azT, -0.4, 0.4);
         u.polT = clamp(u.polT, -9 * DEG, 9 * DEG);
         u.zoomT = clamp(u.zoomT, 0.8, 1.35);

@@ -45,4 +45,5 @@
   transition: color 0.4s, border-color 0.4s;
 }
 .back:hover { color: var(--accent); border-color: var(--accent); }
-@media (max-width: 767px) { .back { right: 1.5rem; top: 1.5rem; font-size: 11px; } }
+/* phones: scrolls away with the page instead of covering the text */
+@media (max-width: 767px) { .back { position: absolute; right: 1.5rem; top: 1.5rem; font-size: 11px; } }

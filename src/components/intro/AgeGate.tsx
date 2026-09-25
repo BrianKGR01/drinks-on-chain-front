@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Logo } from "@/components/brand/Logo";
 import { LetterSplit } from "@/components/ui/LetterSplit";
 import { GlassBottleOrnament } from "@/components/intro/GlassBottleOrnament";
 import { VineOrnament } from "@/components/intro/VineOrnament";
 import { LANGS, UI } from "@/content/i18n";
+import { inertOutside } from "@/lib/inert-outside";
 import { useExperience } from "@/store/experience";
 import styles from "./AgeGate.module.css";
 
@@ -33,16 +34,30 @@ export function AgeGate() {
 
   const handleEnter = useCallback(() => {
     if (leaving) return;
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     setLeaving(true);
     enter();
     window.setTimeout(() => setGone(true), LEAVE_MS);
   }, [enter, leaving]);
 
-  if (gone || (entered && !leaving)) return null;
+  // Modal for real: while the gate is up, nothing behind it takes focus.
+  const visible = !(gone || (entered && !leaving));
+  const rootRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!visible || leaving || !rootRef.current) return;
+    return inertOutside(rootRef.current);
+  }, [visible, leaving]);
+
+  if (!visible) return null;
 
   return (
     <div
-      className={`${styles.intro} ${leaving ? styles.leaving : ""}`}
+      ref={rootRef}
+      // gate-root: globals.css locks document scrolling while this is mounted
+      className={`gate-root ${styles.intro} ${leaving ? styles.leaving : ""}`}
+      // wheel and touch gestures stop here: nothing underneath (page or camera) may move
+      onWheel={(e) => e.stopPropagation()}
+      onTouchMove={(e) => e.stopPropagation()}
       role="dialog"
       aria-modal="true"
       aria-label={t.ageGateAria}

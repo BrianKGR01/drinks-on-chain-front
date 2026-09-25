@@ -1,0 +1,57 @@
+[
+  {
+    "id": "pp_altos",
+    "slug": "bodega-altos-de-calamuchita",
+    "name": "Bodega Altos de Calamuchita",
+    "kind": "bodega",
+    "city": "Santa Ana · Tarija",
+    "address": "Camino a Santa Ana, km 12",
+    "hours": { "es": "Lunes a sábado, 9:00–18:00", "en": "Monday to Saturday, 9am–6pm" },
+    "wineryIds": ["win_altos"],
+    "status": "activo"
+  },
+  {
+    "id": "pp_cintiviejo",
+    "slug": "destileria-cinti-viejo",
+    "name": "Destilería Cinti Viejo",
+    "kind": "bodega",
+    "city": "Camargo · Chuquisaca",
+    "address": "Calle Sucre 214, Camargo",
+    "hours": { "es": "Lunes a viernes, 8:30–17:30", "en": "Monday to Friday, 8:30am–5:30pm" },
+    "wineryIds": ["win_cintiviejo"],
+    "status": "activo"
+  },
+  {
+    "id": "pp_lacava",
+    "slug": "licoreria-la-cava",
+    "name": "Licorería La Cava",
+    "kind": "licoreria",
+    "city": "Tarija",
+    "address": "Calle La Madrid 530, Tarija",
+    "hours": { "es": "Lunes a sábado, 10:00–21:00", "en": "Monday to Saturday, 10am–9pm" },
+    "wineryIds": ["win_altos"],
+    "status": "activo"
+  },
+  {
+    "id": "pp_vinotecasur",
+    "slug": "vinoteca-sur",
+    "name": "Vinoteca Sur",
+    "kind": "vinoteca",
+    "city": "La Paz",
+    "address": "Av. Montenegro 1120, San Miguel",
+    "hours": { "es": "Martes a domingo, 11:00–21:00", "en": "Tuesday to Sunday, 11am–9pm" },
+    "wineryIds": ["win_cintiviejo"],
+    "status": "activo"
+  },
+  {
+    "id": "pp_equipetrol",
+    "slug": "bodega-y-cava-equipetrol",
+    "name": "Bodega & Cava Equipetrol",
+    "kind": "cava",
+    "city": "Santa Cruz de la Sierra",
+    "address": "Av. San Martín 2210, Equipetrol",
+    "hours": { "es": "Lunes a sábado, 10:00–22:00", "en": "Monday to Saturday, 10am–10pm" },
+    "wineryIds": ["win_cintiviejo"],
+    "status": "activo"
+  }
+]
