@@ -13,7 +13,7 @@ const COPY = {
       { title: "Distribución", lines: ["Licorerías, cavas y restaurantes como puntos de recojo.", "puntos@drinksonchain.bo"] },
       { title: "Prensa", lines: ["Material, entrevistas y visitas al valle.", "prensa@drinksonchain.bo"] },
     ],
-    address: ["Drinks on Chain · Debro Solutions", "Tarija, Bolivia", "+591 4 000 0000"],
+    address: ["Drinks on Chain", "Tarija, Bolivia", "+591 4 000 0000"],
     next: "Las parcelas",
   },
   en: {
@@ -22,7 +22,7 @@ const COPY = {
       { title: "Distribution", lines: ["Wine shops, cellars and restaurants as pick-up points.", "puntos@drinksonchain.bo"] },
       { title: "Press", lines: ["Material, interviews and visits to the valley.", "prensa@drinksonchain.bo"] },
     ],
-    address: ["Drinks on Chain · Debro Solutions", "Tarija, Bolivia", "+591 4 000 0000"],
+    address: ["Drinks on Chain", "Tarija, Bolivia", "+591 4 000 0000"],
     next: "The parcels",
   },
 } as const;

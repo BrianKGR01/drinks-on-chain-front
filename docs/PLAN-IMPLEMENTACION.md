@@ -19,7 +19,7 @@ La carpeta `F:\Project\DrinksOnChain\` es el paraguas. Un repositorio de GitHub 
 | `doc-api-contracts` | Tipos TypeScript + OpenAPI + servidor de mocks (MSW) | Paquete npm | Propuesto, sprint 0 |
 | `doc-erp-web` | Sistema 1 · ERP de trazabilidad | Web B2B, escritorio + tablet de planta | Sprint 2 |
 | `doc-marketplace-app` | Sistema 2 · Marketplace + visor QR + cava | Web B2C mobile-first, PWA instalable | Sprint 3 |
-| `doc-backoffice-web` | Sistema 3 · Panel de control Debro | Web escritorio, densa | Sprint 5 |
+| `doc-backoffice-web` | Sistema 3 · Panel de control de Drinks on Chain | Web escritorio, densa | Sprint 5 |
 | `doc-claim-pos` | Sistema 4 · App de claim y entregas | PWA para tablet en modo kiosco | Sprint 6 |
 
 Por qué multirepo y no monorepo: cada sistema tiene ciclo de vida, equipo de uso y despliegue distintos, y el usuario ya definió la carpeta paraguas como forma de trabajo. Lo compartido se extrae a dos paquetes (`design-system`, `api-contracts`) para no duplicar.
@@ -38,7 +38,7 @@ Por qué multirepo y no monorepo: cada sistema tiene ciclo de vida, equipo de us
 - **Testing**: Vitest + Testing Library para unidades; Playwright para flujos críticos (login por rol, bifurcación, compra, claim).
 - **Calidad**: ESLint (config next) + Prettier + Husky/lint-staged; GitHub Actions con `lint`, `tsc`, `test`, `build` en cada PR.
 - **Despliegue**: Vercel (una app por repo, previews por PR). El usuario ya tiene Vercel conectado.
-- **Autenticación (frontend)**: abstracción `AuthProvider` con dos adaptadores, `mock` y `backend`, para no depender de la decisión del backend (JWT propio, Supabase Auth o Clerk). Todos los sistemas usan roles: `enologo | operario | admin_bodega | admin_debro | cajero | miembro`.
+- **Autenticación (frontend)**: abstracción `AuthProvider` con dos adaptadores, `mock` y `backend`, para no depender de la decisión del backend (JWT propio, Supabase Auth o Clerk). Todos los sistemas usan roles: `enologo | operario | admin_bodega | admin_plataforma | cajero | miembro`.
 
 ## 3. Blockchain y billeteras desde el cliente
 

@@ -18,14 +18,14 @@ export function LegalPage() {
       </header>
       <div className={styles.legal}>
         <h3>{es ? "Editor" : "Publisher"}</h3>
-        <p>Debro Solutions · Drinks on Chain. Tarija, Bolivia. contacto@drinksonchain.bo</p>
+        <p>Drinks on Chain. Tarija, Bolivia. contacto@drinksonchain.bo</p>
         <h3>{es ? "Alojamiento" : "Hosting"}</h3>
         <p>Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, Estados Unidos.</p>
         <h3>{es ? "Propiedad intelectual" : "Intellectual property"}</h3>
         <p>
           {es
-            ? "Los textos, dibujos, mapas y el código de este sitio son propiedad de Debro Solutions o de las bodegas asociadas. Queda prohibida su reproducción sin autorización escrita."
-            : "The texts, drawings, maps and code of this site belong to Debro Solutions or to the partner wineries. Reproduction without written permission is prohibited."}
+            ? "Los textos, dibujos, mapas y el código de este sitio son propiedad de Drinks on Chain o de las bodegas asociadas. Queda prohibida su reproducción sin autorización escrita."
+            : "The texts, drawings, maps and code of this site belong to Drinks on Chain or to the partner wineries. Reproduction without written permission is prohibited."}
         </p>
         <h3>{es ? "Datos personales" : "Personal data"}</h3>
         <p>
