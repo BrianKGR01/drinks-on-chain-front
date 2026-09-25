@@ -31,7 +31,7 @@ export function Logo({ className = "", link = true, size = "md" }: LogoProps) {
     </span>
   );
   return link ? (
-    <Link href="/" aria-label={t.brand} className={styles.link}>
+    <Link href="/" className={styles.link}>
       {body}
     </Link>
   ) : (

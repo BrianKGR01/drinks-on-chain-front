@@ -80,8 +80,8 @@
   gap: 0.6em;
   min-height: 3rem;
   padding: 0.95rem 2.1rem 0.85rem 2.4rem;
-  border: 1px solid var(--accent);
-  background: var(--accent);
+  border: 1px solid var(--accent-deep);
+  background: var(--accent-deep); /* paper on deep gold: AA contrast */
   color: var(--paper);
   font-family: var(--font-display);
   font-size: max(0.8125rem, 11.4px);
@@ -91,7 +91,7 @@
 }
 .button:hover { background: transparent; color: var(--accent-deep); transform: translateY(-1px); }
 .buttonGhost { composes: button; background: transparent; color: var(--accent-deep); }
-.buttonGhost:hover { background: var(--accent); color: var(--paper); }
+.buttonGhost:hover { background: var(--accent-deep); color: var(--paper); }
 .soon {
   composes: button;
   background: transparent;
@@ -228,7 +228,7 @@
   white-space: nowrap;
 }
 .badge::before { content: ""; width: 0.45em; height: 0.45em; border-radius: 50%; background: currentColor; }
-.badge_socia { background: var(--accent); color: var(--paper); }
+.badge_socia { background: var(--accent-deep); border-color: var(--accent-deep); color: var(--paper); }
 .badge_en-conversacion { color: var(--accent-deep); }
 .badge_referencia { border-color: var(--line); color: var(--muted); }
 
