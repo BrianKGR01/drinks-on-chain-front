@@ -4,9 +4,11 @@ import { readApiOrigin } from "./src/lib/api-origin";
 const isDev = process.env.NODE_ENV === "development";
 /** Main landing: the wines catalogue lives there (see src/lib/links.ts for the same fallback). */
 const LANDING = (process.env.NEXT_PUBLIC_URL_LANDING ?? (isDev ? "http://localhost:3001" : "https://drinks-on-chain-landing.vercel.app")).replace(/\/$/, "");
-/** Backend API (server variable). The browser calls `/api/v1/*` of this site and Next proxies it (plan/03 §6, P-1). */
-const API_ORIGIN = readApiOrigin();
-if (process.env.API_ORIGIN && !API_ORIGIN) console.warn(`API_ORIGIN is not an http(s) URL; /api/v1 stays off: ${process.env.API_ORIGIN}`);
+/**
+ * Backend API (server variable). The browser calls `/api/v1/*` of this site and `src/proxy.ts`
+ * rewrites it with the client's IP signed (plan/03 §6, P-1; O1-OPS-1).
+ */
+if (process.env.API_ORIGIN && !readApiOrigin()) console.warn(`API_ORIGIN is not an http(s) URL; /api/v1 stays off: ${process.env.API_ORIGIN}`);
 /** Cloudflare Turnstile (anti-bot check of the public forms): its script and its iframe. */
 const TURNSTILE = "https://challenges.cloudflare.com";
 
@@ -17,7 +19,7 @@ const TURNSTILE = "https://challenges.cloudflare.com";
  * this origin only (Vercel Web Analytics is same-origin; its debug script
  * comes from va.vercel-scripts.com in development only). `blob:` covers
  * WebGL textures. Cloudflare Turnstile needs its script and its iframe.
- * The API is same-origin (`/api/v1` rewrite), so `connect-src` stays 'self'.
+ * The API is same-origin (`/api/v1` proxy), so `connect-src` stays 'self'.
  */
 const csp = [
   "default-src 'self'",
@@ -51,11 +53,11 @@ const nextConfig: NextConfig = {
     browserToTerminal: false,
   },
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
-  },
-  async rewrites() {
-    // Without API_ORIGIN there is no proxy: /api/v1 answers 404 and the forms say sending is unavailable.
-    return API_ORIGIN ? [{ source: "/api/v1/:path*", destination: `${API_ORIGIN}/v1/:path*` }] : [];
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      // API responses rewritten by src/proxy.ts are never stored in Vercel's cache
+      { source: "/api/v1/:path*", headers: [{ key: "x-vercel-enable-rewrite-caching", value: "0" }] },
+    ];
   },
   async redirects() {
     return [

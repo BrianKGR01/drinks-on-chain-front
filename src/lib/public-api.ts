@@ -1,7 +1,7 @@
 /**
  * Client for the public, sessionless routes of the backend (`/v1/public/*`).
- * The browser calls this site's own `/api/v1/*`, which Next rewrites to the
- * API (see `api-origin.ts`). No cookies: this site signs no one in, so the
+ * The browser calls this site's own `/api/v1/*`, which `src/proxy.ts` rewrites
+ * to the API (see `api-proxy.ts`). No cookies: this site signs no one in, so the
  * requests go with `credentials: "omit"`.
  *
  * Responses follow the backend envelope (contract of Wave 0 §1):

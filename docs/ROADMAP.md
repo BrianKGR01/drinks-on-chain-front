@@ -89,7 +89,8 @@ Contrato: `plan/contratos/o1-backoffice-y-bodegas.md` §0 y §3; proceso en `doc
 - [x] `/unirse/verificar?token=`: confirma el correo (`POST …/verify`) o explica que el enlace no es válido o caducó; reintento ante errores transitorios; `noindex` · 27-09-2026
 - [x] Pasos del "Proceso de alta" alineados con el flujo real (solicitud y correo, revisión y reunión, alta e invitación al dueño, equipo y primer lote) · 27-09-2026
 - [x] e2e `e2e/unirse.spec.ts` con la API interceptada (éxito, 422 por campo, 429, red, sin API, verificación válida e inválida, campo trampa, teclado) y axe sin violaciones serias · 27-09-2026
-- [ ] Variables en el proyecto de Vercel (las crea la coordinación): `API_ORIGIN` y `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
+- [x] IP real del cliente detrás del proxy (O1-OPS-1): `rewrites` sustituidos por `src/proxy.ts`, que reescribe `/api/v1/*` a `${API_ORIGIN}/v1/*` con `X-DOC-Client-IP` firmada (HMAC con `PROXY_SHARED_SECRET`, variable de servidor); pruebas en `e2e/api-proxy.spec.ts` · 27-09-2026
+- [ ] Variables en el proyecto de Vercel (las crea la coordinación): `API_ORIGIN`, `PROXY_SHARED_SECRET` y `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
 - [ ] Prueba contra el backend real (pista E2E, cuando la parte B del backend esté desplegada)
 - [ ] Postulación de puntos de canje por formulario (sin contrato todavía; hoy `?tipo=punto` ofrece el correo)
 
