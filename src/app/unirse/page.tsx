@@ -10,6 +10,6 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function Page() {
-  // Same check as the `/api/v1` rewrite in next.config.ts: without an API the form says so.
+  // Same check as the `/api/v1` proxy in src/proxy.ts: without an API the form says so.
   return <JoinPage apiReady={readApiOrigin() !== null} />;
 }
