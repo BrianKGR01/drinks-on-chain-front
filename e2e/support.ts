@@ -4,13 +4,14 @@ import type { Page } from "@playwright/test";
 /**
  * Console errors, uncaught exceptions and failed requests of this site.
  * Ignored: browser-extension noise (wallet providers inject scripts), the
- * Vercel Web Analytics script (it only exists on Vercel) and the WebGL
+ * Vercel Web Analytics script (it only exists on Vercel), Cloudflare
+ * Turnstile (its private-access-token probes answer 401) and the WebGL
  * driver messages of machines without a GPU (CI): the map may not render
  * there, and the scene disables itself without breaking the page.
  */
 export function trackErrors(page: Page) {
   const errors: string[] = [];
-  const noise = /chrome-extension:|moz-extension:|MetaMask|ethereum|_vercel\/insights|WebGL|GPU stall|GroupMarkerNotSet/i;
+  const noise = /chrome-extension:|moz-extension:|MetaMask|ethereum|_vercel\/insights|challenges\.cloudflare\.com|WebGL|GPU stall|GroupMarkerNotSet/i;
   page.on("pageerror", (e) => !noise.test(`${e.message} ${e.stack ?? ""}`) && errors.push(e.message));
   page.on("console", (m) => {
     if (m.type() !== "error") return;

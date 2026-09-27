@@ -28,6 +28,9 @@ export default defineConfig({
   ],
   webServer: {
     command: `pnpm build && pnpm exec next start --port ${PORT}`,
+    // The tests intercept /api/v1 in the browser (page.route): the rewrite target is never reached,
+    // but it must exist for /unirse to offer the form.
+    env: { ...(process.env as Record<string, string>), API_ORIGIN: process.env.E2E_API_ORIGIN ?? "http://127.0.0.1:9" },
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 300_000,
