@@ -1,6 +1,6 @@
 # Drinks on Chain — Sitio de las bodegas (`bodegas.`)
 
-Sitio B2B del ecosistema **Drinks on Chain**: el mapa grabado de los valles de Tarija y Cinti con foco en la red de socios. Muestra las parcelas y las bodegas de la red, los puntos de recojo, la propuesta para unirse y el acceso a los sistemas de los socios (ERP para bodegas, POS para puntos de recojo). La experiencia del mapa replica el modelo de [chartogne-taillet.com](https://chartogne-taillet.com/fr): un mapa aéreo dibujado a tinta sobre papel.
+Sitio B2B del ecosistema **Drinks on Chain**: el mapa grabado de los valles de Tarija y Cinti con foco en la red de socios. Muestra las parcelas y las bodegas de la red, los puntos de canje (ruta `/puntos-de-recojo`), la propuesta para unirse y el acceso a los sistemas de los socios (ERP para bodegas, POS para puntos de canje). La experiencia del mapa replica el modelo de [chartogne-taillet.com](https://chartogne-taillet.com/fr): un mapa aéreo dibujado a tinta sobre papel.
 
 Este sitio **no autentica a nadie**: no tiene sesión ni formularios de credenciales. "Acceso" solo enlaza al subdominio de cada sistema.
 
@@ -17,13 +17,18 @@ Plan: `../docs/02-plan-landing-ecosistema.md` §4 y `../docs/03-roadmap-frontend
 
 ## Scripts
 
+Node 22 (`.nvmrc`) y pnpm 10.
+
 ```bash
-pnpm dev      # http://localhost:3000
+pnpm dev          # http://localhost:3000
 pnpm build
 pnpm start
 pnpm lint
-pnpm exec tsc --noEmit
+pnpm typecheck    # next typegen + tsc --noEmit
+pnpm e2e          # Playwright: build de producción en el puerto 3120 (E2E_PORT para cambiarlo)
 ```
+
+La primera vez: `pnpm exec playwright install chromium`. Las pruebas de humo (`e2e/`) cubren la barrera de edad, los controles accesibles del mapa (capa y navegador de parcelas), el menú, las rutas de la red, la redirección `/parcelas/…` → `/valles/…` y axe (sin violaciones serias) en escritorio y móvil. No dependen del lienzo WebGL, que puede no dibujarse en una máquina sin GPU. La CI (`.github/workflows/ci.yml`) corre lint, typecheck, build y Playwright en cada push y PR a `dev` y `main`; si falla, el informe queda como artefacto.
 
 ## Variables de entorno
 
