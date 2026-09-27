@@ -24,7 +24,7 @@ const garamond = EB_Garamond({
 const home = pageMetadata({
   path: "/",
   description:
-    "El mapa grabado de las bodegas de altura de Bolivia: parcelas de Tarija y el Valle de Cinti, bodegas de la red, puntos de recojo y acceso para socios.",
+    "El mapa grabado de las bodegas de altura de Bolivia: parcelas de Tarija y el Valle de Cinti, bodegas de la red, puntos de canje y acceso para socios.",
 });
 
 export const metadata: Metadata = {
