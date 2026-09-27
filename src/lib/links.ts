@@ -7,7 +7,7 @@ const PROD = process.env.NODE_ENV === "production";
 /** Main landing (root domain). */
 const LANDING = process.env.NEXT_PUBLIC_URL_LANDING ?? (PROD ? "https://drinks-on-chain-landing.vercel.app" : "http://localhost:3001");
 /** S1 ERP and S4 POS are not deployed yet: without a variable, production shows them as "coming soon" (null). */
-const ERP = process.env.NEXT_PUBLIC_URL_ERP ?? (PROD ? null : "http://localhost:3003");
+const ERP = process.env.NEXT_PUBLIC_URL_ERP ?? (PROD ? null : "http://localhost:3002");
 const POS = process.env.NEXT_PUBLIC_URL_POS ?? (PROD ? null : "http://localhost:3004");
 
 const join = (base: string, path = "") => `${base.replace(/\/$/, "")}${path}`;

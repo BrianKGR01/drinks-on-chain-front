@@ -32,8 +32,8 @@ Copia `.env.example` a `.env.local`. Los enlaces a los otros sitios nunca se esc
 | Variable | Uso | Sin definir |
 |---|---|---|
 | `NEXT_PUBLIC_URL_LANDING` | Landing principal (raíz): `/vinos`, privacidad, "Para consumidores" | Vercel en producción, `localhost:3001` en desarrollo |
-| `NEXT_PUBLIC_URL_ERP` | ERP de trazabilidad (`erp.`), puerta "Soy bodega" de `/acceso` | En producción la puerta dice "Disponible pronto" |
-| `NEXT_PUBLIC_URL_POS` | Aplicación de entregas (`pos.`), puerta "Soy punto de recojo" | En producción la puerta dice "Disponible pronto" |
+| `NEXT_PUBLIC_URL_ERP` | ERP de trazabilidad (`erp.`), puerta "Soy bodega" de `/acceso` | `localhost:3002` en desarrollo; en producción la puerta dice "Disponible pronto" |
+| `NEXT_PUBLIC_URL_POS` | Aplicación de canje (`pos.`), puerta "Soy punto de recojo" | `localhost:3004` en desarrollo; en producción la puerta dice "Disponible pronto" |
 | `NEXT_PUBLIC_SITE_URL` | Origen canónico (metadatos, sitemap, robots) | `drinks-on-chain-bodegas.vercel.app` en producción |
 
 ## Rutas
