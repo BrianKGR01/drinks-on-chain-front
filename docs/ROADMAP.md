@@ -69,6 +69,16 @@ Convenciones: trabajo en `dev`, Conventional Commits, PR `dev → main` al cerra
 - [x] "Volver al valle" y el conmutador Parcelas / Bodegas ya no se superponen: comparten el hueco superior · 25-09-2026
 - [ ] Grosor de trazo del mapa en móvil: pendiente de decisión (opiniones divididas)
 
+## O0-WEB-1 · Cierre del Sistema 0 (27-09-2026)
+
+- [x] Node 22 (`.nvmrc`, `engines`), `packageManager` como en los repos de la organización y script `typecheck` (`next typegen && tsc --noEmit`) · 27-09-2026
+- [x] Enlaces entre sitios: valores locales por defecto ERP `localhost:3002`, POS `localhost:3004`, landing `localhost:3001` · 27-09-2026
+- [x] Pruebas de humo con Playwright (`e2e/`, escritorio y móvil): barrera de edad, controles accesibles del mapa sin depender del lienzo WebGL, menú, rutas de la red, `/acceso` sin credenciales, `/parcelas/…` → `/valles/…` (308), `/vinos` → landing y axe sin violaciones serias en la portada y en una bodega · 27-09-2026
+- [x] CI (`.github/workflows/ci.yml`): lint, typecheck, build y Playwright (Chromium) en push y PR a `dev` y `main`; informe como artefacto si falla · 27-09-2026
+- [x] Textos del canje: la ruta sigue siendo `/puntos-de-recojo`, pero el menú y las páginas hablan de "puntos de canje", "pase de canje" y NFT quemado al entregar; POS con tablet vinculada y PIN personal del cajero; el dueño invita a su equipo; sin promesas de precio ni de cobro · 27-09-2026
+- [x] Botón "Entrar" de la barrera con área real de 200 × 60 px (antes un ancla de 0 × 0) · 27-09-2026
+- [ ] Variables `NEXT_PUBLIC_URL_*` en el proyecto de Vercel (las crea la coordinación): `NEXT_PUBLIC_URL_LANDING`, `NEXT_PUBLIC_URL_ERP`; `NEXT_PUBLIC_URL_POS` cuando exista el POS
+
 ## Mediciones (Lighthouse 12, móvil, build de producción local, 25-09-2026)
 
 | Página | Rendimiento | Accesibilidad | Buenas prácticas | SEO |
