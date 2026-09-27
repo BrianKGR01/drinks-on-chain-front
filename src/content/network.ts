@@ -109,7 +109,7 @@ export const NETWORK_COPY = {
   es: {
     status: { socia: "Socia", "en-conversacion": "En conversación", referencia: "Referencia" } satisfies Record<WineryStatus, string>,
     statusHint: {
-      socia: "Registra sus lotes en el ERP y los ofrece a precio de bodega.",
+      socia: "Registra sus lotes en el ERP y los ofrece en el Marketplace.",
       "en-conversacion": "Preparando su ingreso; aún sin lotes registrados.",
       referencia: "Aparece por contexto histórico, sin relación comercial.",
     } satisfies Record<WineryStatus, string>,
@@ -126,12 +126,12 @@ export const NETWORK_COPY = {
     } satisfies Record<LotStatus, string>,
     pickupKind: { bodega: "Bodega", licoreria: "Licorería", vinoteca: "Vinoteca", cava: "Cava" } satisfies Record<PickupKind, string>,
     kind: { vino: "Vino", singani: "Singani" },
-    testNotice: "Red de prueba: las bodegas y los puntos de recojo de esta página son ficticios mientras se cierran los primeros acuerdos.",
+    testNotice: "Red de prueba: las bodegas y los puntos de canje de esta página son ficticios mientras se cierran los primeros acuerdos.",
   },
   en: {
     status: { socia: "Partner", "en-conversacion": "In talks", referencia: "Reference" } satisfies Record<WineryStatus, string>,
     statusHint: {
-      socia: "Records its lots in the ERP and offers them at winery price.",
+      socia: "Records its lots in the ERP and offers them on the Marketplace.",
       "en-conversacion": "Preparing to join; no lots recorded yet.",
       referencia: "Shown for historical context, no commercial relationship.",
     } satisfies Record<WineryStatus, string>,
@@ -148,7 +148,7 @@ export const NETWORK_COPY = {
     } satisfies Record<LotStatus, string>,
     pickupKind: { bodega: "Winery", licoreria: "Wine shop", vinoteca: "Wine bar", cava: "Cellar" } satisfies Record<PickupKind, string>,
     kind: { vino: "Wine", singani: "Singani" },
-    testNotice: "Test network: the wineries and pick-up points on this page are fictional while the first agreements are closed.",
+    testNotice: "Test network: the wineries and redemption points on this page are fictional until the first agreements are signed.",
   },
 } as const;
 

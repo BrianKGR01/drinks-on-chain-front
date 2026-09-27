@@ -10,7 +10,7 @@ const COPY = {
   es: {
     sectors: [
       { title: "Bodegas", lines: ["¿Produces vino o singani en Bolivia y quieres trazar tus lotes?", "bodegas@drinksonchain.bo"] },
-      { title: "Distribución", lines: ["Licorerías, cavas y restaurantes como puntos de recojo.", "puntos@drinksonchain.bo"] },
+      { title: "Puntos de canje", lines: ["Licorerías, cavas y restaurantes que entregan las botellas a sus compradores.", "puntos@drinksonchain.bo"] },
       { title: "Prensa", lines: ["Material, entrevistas y visitas al valle.", "prensa@drinksonchain.bo"] },
     ],
     address: ["Drinks on Chain", "Tarija, Bolivia", "+591 4 000 0000"],
@@ -19,7 +19,7 @@ const COPY = {
   en: {
     sectors: [
       { title: "Wineries", lines: ["Do you make wine or singani in Bolivia and want to trace your lots?", "bodegas@drinksonchain.bo"] },
-      { title: "Distribution", lines: ["Wine shops, cellars and restaurants as pick-up points.", "puntos@drinksonchain.bo"] },
+      { title: "Redemption points", lines: ["Wine shops, cellars and restaurants that hand the bottles over to their buyers.", "puntos@drinksonchain.bo"] },
       { title: "Press", lines: ["Material, interviews and visits to the valley.", "prensa@drinksonchain.bo"] },
     ],
     address: ["Drinks on Chain", "Tarija, Bolivia", "+591 4 000 0000"],

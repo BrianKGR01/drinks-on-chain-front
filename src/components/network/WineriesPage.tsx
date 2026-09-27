@@ -16,7 +16,7 @@ const COPY = {
     listEyebrow: "La red",
     join: "¿Tienes una bodega o un viñedo?",
     joinCta: "Unirse a la red",
-    next: "Puntos de recojo",
+    next: "Puntos de canje",
   },
   en: {
     title: "Wineries",
@@ -24,7 +24,7 @@ const COPY = {
     listEyebrow: "The network",
     join: "Do you have a winery or a vineyard?",
     joinCta: "Join the network",
-    next: "Pick-up points",
+    next: "Redemption points",
   },
 } as const;
 
