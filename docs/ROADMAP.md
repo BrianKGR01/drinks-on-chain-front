@@ -79,6 +79,20 @@ Convenciones: trabajo en `dev`, Conventional Commits, PR `dev → main` al cerra
 - [x] Botón "Entrar" de la barrera con área real de 200 × 60 px (antes un ancla de 0 × 0) · 27-09-2026
 - [ ] Variables `NEXT_PUBLIC_URL_*` en el proyecto de Vercel (las crea la coordinación): `NEXT_PUBLIC_URL_LANDING`, `NEXT_PUBLIC_URL_ERP`; `NEXT_PUBLIC_URL_POS` cuando exista el POS
 
+## O1-WEB-1 · Solicitud de alta real en `/unirse` (27-09-2026)
+
+Contrato: `plan/contratos/o1-backoffice-y-bodegas.md` §0 y §3; proceso en `docs-back/07` §1 y §10.
+
+- [x] `next.config.ts`: `rewrites` de `/api/v1/:path*` a `${API_ORIGIN}/v1/:path*` (variable de servidor; sin ella no hay proxy y el formulario dice que el envío no está disponible); CSP con el script y el iframe de Turnstile · 27-09-2026
+- [x] Formulario de `/unirse` con los campos del contrato (razón social, nombre comercial, NIT, categoría, región de `src/content`, contacto, mensaje), validación mínima en cliente, Cloudflare Turnstile (`NEXT_PUBLIC_TURNSTILE_SITE_KEY`, clave de prueba por defecto) y campo trampa `website` · 27-09-2026
+- [x] Respuestas: 202 → "Revisa tu correo" con los siguientes pasos; 422 marcado en su campo (`details[].field`); 429 con el tiempo de `Retry-After`; error de red y API no disponible; `aria-live`, foco al primer error y al resultado; textos ES/EN · 27-09-2026
+- [x] `/unirse/verificar?token=`: confirma el correo (`POST …/verify`) o explica que el enlace no es válido o caducó; reintento ante errores transitorios; `noindex` · 27-09-2026
+- [x] Pasos del "Proceso de alta" alineados con el flujo real (solicitud y correo, revisión y reunión, alta e invitación al dueño, equipo y primer lote) · 27-09-2026
+- [x] e2e `e2e/unirse.spec.ts` con la API interceptada (éxito, 422 por campo, 429, red, sin API, verificación válida e inválida, campo trampa, teclado) y axe sin violaciones serias · 27-09-2026
+- [ ] Variables en el proyecto de Vercel (las crea la coordinación): `API_ORIGIN` y `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
+- [ ] Prueba contra el backend real (pista E2E, cuando la parte B del backend esté desplegada)
+- [ ] Postulación de puntos de canje por formulario (sin contrato todavía; hoy `?tipo=punto` ofrece el correo)
+
 ## Mediciones (Lighthouse 12, móvil, build de producción local, 25-09-2026)
 
 | Página | Rendimiento | Accesibilidad | Buenas prácticas | SEO |
