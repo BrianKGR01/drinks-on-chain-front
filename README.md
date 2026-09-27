@@ -40,7 +40,8 @@ Copia `.env.example` a `.env.local`. Los enlaces a los otros sitios nunca se esc
 | `NEXT_PUBLIC_URL_ERP` | ERP de trazabilidad (`erp.`), puerta "Soy bodega" de `/acceso` | `localhost:3002` en desarrollo; en producción la puerta dice "Disponible pronto" |
 | `NEXT_PUBLIC_URL_POS` | Aplicación de canje (`pos.`), puerta "Soy punto de recojo" | `localhost:3004` en desarrollo; en producción la puerta dice "Disponible pronto" |
 | `NEXT_PUBLIC_SITE_URL` | Origen canónico (metadatos, sitemap, robots) | `drinks-on-chain-bodegas.vercel.app` en producción |
-| `API_ORIGIN` | **De servidor.** Origen del backend: Next reescribe `/api/v1/*` de este sitio a `${API_ORIGIN}/v1/*`, así el navegador solo habla con su propio origen. Se lee al compilar (cambiarla exige redesplegar) | Sin proxy: `/unirse` muestra que el envío no está disponible y ofrece el correo |
+| `API_ORIGIN` | **De servidor.** Origen del backend: `src/proxy.ts` reescribe `/api/v1/*` de este sitio a `${API_ORIGIN}/v1/*`, así el navegador solo habla con su propio origen. `/unirse` la lee al compilar (cambiarla exige redesplegar) | Sin proxy: `/unirse` muestra que el envío no está disponible y ofrece el correo |
+| `PROXY_SHARED_SECRET` | **De servidor, nunca `NEXT_PUBLIC_`.** Firma la IP del cliente (`X-DOC-Client-IP` + HMAC-SHA256 con marca de tiempo) para los límites y el captcha del backend (O1-OPS-1); el mismo valor que en el backend del entorno (con varios separados por comas, firma con el primero) | Sin firma: el backend ve la IP de Vercel |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Clave de sitio de Cloudflare Turnstile para el captcha de `/unirse` (la secreta la tiene el backend) | La clave de prueba pública `1x00000000000000000000AA`, que siempre valida: solo sirve contra un backend con la secreta de prueba |
 
 ## Rutas
