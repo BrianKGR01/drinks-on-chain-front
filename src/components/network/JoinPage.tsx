@@ -39,12 +39,12 @@ const COPY = {
     ],
     stepsEyebrow: "Proceso de alta",
     steps: [
-      { h: "Contacto", p: "Nos escribes con este formulario o a bodegas@drinksonchain.bo." },
-      { h: "Visita y acuerdo", p: "Visitamos la bodega, revisamos terroirs y procesos y firmamos el acuerdo de la red." },
-      { h: "Alta en la red", p: "Damos de alta la bodega y su cuenta institucional; no tienes que manejar criptomonedas." },
-      { h: "Invitaciones y primer lote", p: "Recibes tu acceso al ERP, invitas a tu equipo y registras tu primer lote desde la parcela." },
+      { h: "Solicitud", p: "Envías este formulario y confirmas tu correo con el enlace que te mandamos." },
+      { h: "Revisión y reunión", p: "El equipo de Drinks on Chain revisa la solicitud y, si hace falta, agenda una llamada o una visita a la bodega." },
+      { h: "Alta en la red", p: "Si se aprueba, damos de alta la bodega y el dueño recibe una invitación al ERP; no tienes que manejar criptomonedas." },
+      { h: "Equipo y primer lote", p: "Aceptas la invitación, invitas a tu equipo y registras tu primer lote desde la parcela." },
     ],
-    formEyebrow: "Escríbenos",
+    formEyebrow: "Solicitud de alta",
     next: "Puntos de canje",
   },
   en: {
@@ -76,18 +76,18 @@ const COPY = {
     ],
     stepsEyebrow: "How to join",
     steps: [
-      { h: "Contact", p: "Write to us with this form or at bodegas@drinksonchain.bo." },
-      { h: "Visit and agreement", p: "We visit the winery, review terroirs and processes and sign the network agreement." },
-      { h: "Onboarding", p: "We register the winery and its institutional account; you do not need to handle cryptocurrency." },
-      { h: "Invitations and first lot", p: "You receive your ERP access, invite your team and record your first lot from the parcel." },
+      { h: "Application", p: "You send this form and confirm your email with the link we send you." },
+      { h: "Review and meeting", p: "The Drinks on Chain team reviews the application and, if needed, schedules a call or a visit to the winery." },
+      { h: "Onboarding", p: "If approved, we register the winery and its owner receives an ERP invitation; you do not need to handle cryptocurrency." },
+      { h: "Team and first lot", p: "You accept the invitation, invite your team and record your first lot from the parcel." },
     ],
-    formEyebrow: "Write to us",
+    formEyebrow: "Apply to join",
     next: "Redemption points",
   },
 } as const;
 
-/** /unirse — proposal for wineries and the (demo) contact form. */
-export function JoinPage() {
+/** /unirse — proposal for wineries and the application form (O1-WEB-1). */
+export function JoinPage({ apiReady }: { apiReady: boolean }) {
   const lang = useExperience((s) => s.lang);
   const c = COPY[lang];
   const t = UI[lang];
@@ -168,7 +168,7 @@ export function JoinPage() {
         </header>
         {/* useSearchParams (?tipo=punto) needs a Suspense boundary to keep the page static */}
         <Suspense fallback={null}>
-          <JoinForm lang={lang} privacyHref={LINKS.landingPrivacy} />
+          <JoinForm lang={lang} privacyHref={LINKS.landingPrivacy} apiReady={apiReady} />
         </Suspense>
       </section>
 
