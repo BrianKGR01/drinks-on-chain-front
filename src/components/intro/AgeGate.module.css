@@ -71,12 +71,16 @@
 }
 
 /* Enter button ----------------------------------------------------- */
+/* A real 200 x 60 hit box centred on the same point as before (it used to
+   be a 0 x 0 anchor with the label hanging off it: clickable, but with no
+   size for touch, focus or automation). */
 .enter {
   position: absolute;
   bottom: 25%;
   left: 50%;
-  width: 0;
-  height: 0;
+  width: 200px;
+  height: 60px;
+  margin: 0 0 -30px -100px;
   cursor: pointer;
   text-transform: none;
   overflow: visible;
@@ -85,8 +89,8 @@
 
 .label {
   position: absolute;
-  left: -100px;
-  top: -30px;
+  left: 0;
+  top: 0;
   width: 200px;
   height: 60px;
   line-height: 60px;
@@ -108,7 +112,7 @@
 .enter:focus-visible .label { color: var(--ink); }
 
 /* The thin "descend" glyph under the label ------------------------ */
-.icon { position: absolute; top: 35px; left: 0; }
+.icon { position: absolute; top: 65px; left: 100px; }
 .bar1 {
   position: absolute;
   top: 0; left: 0;
