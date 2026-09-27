@@ -5,6 +5,11 @@ import { defineConfig, devices } from "@playwright/test";
 const PORT = Number(process.env.E2E_PORT ?? 3120);
 // Locally the installed Chrome; in CI the Chromium that Playwright installs.
 const channel = process.env.CI ? undefined : "chrome";
+// CI runners have no GPU: Chromium would draw the WebGL valley in software and
+// starve the main thread. There the tests run without WebGL, as a visitor on a
+// device without it would (the scene disables itself). Locally the map renders
+// unless E2E_NO_WEBGL=1.
+const launchOptions = process.env.CI || process.env.E2E_NO_WEBGL ? { args: ["--disable-3d-apis"] } : {};
 
 export default defineConfig({
   testDir: "./e2e",
@@ -18,8 +23,8 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   projects: [
-    { name: "escritorio", use: { ...devices["Desktop Chrome"], channel } },
-    { name: "movil", use: { ...devices["Pixel 7"], channel } },
+    { name: "escritorio", use: { ...devices["Desktop Chrome"], channel, launchOptions } },
+    { name: "movil", use: { ...devices["Pixel 7"], channel, launchOptions } },
   ],
   webServer: {
     command: `pnpm build && pnpm exec next start --port ${PORT}`,
