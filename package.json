@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
-    "e2e": "playwright test"
+    "e2e": "pnpm e2e:lista && pnpm e2e:solicitud && pnpm e2e:sin-api",
+    "e2e:lista": "playwright test",
+    "e2e:solicitud": "playwright test -c playwright.solicitud.config.ts",
+    "e2e:sin-api": "playwright test -c playwright.sin-api.config.ts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",

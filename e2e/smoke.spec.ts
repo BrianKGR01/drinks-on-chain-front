@@ -62,7 +62,7 @@ test.describe("mapa y barrera de edad", () => {
     for (const [name, path] of [
       ["Bodegas", "/bodegas"],
       ["Puntos de canje", "/puntos-de-recojo"],
-      ["Unirse", "/unirse"],
+      ["Unirse", "/lista-de-espera"],
       ["Acceso", "/acceso"],
     ] as const) {
       await page.getByRole("button", { name: "MENU" }).click();
@@ -81,6 +81,7 @@ test.describe("rutas", () => {
     ["/bodegas", "Bodegas"],
     [`/bodegas/${WINERY}`, "Destilería Cinti Viejo"],
     ["/puntos-de-recojo", "Puntos de canje"],
+    ["/lista-de-espera", "Tu bodega, entre las primeras de la red"],
     ["/unirse", "Unirse a la red"],
     ["/acceso", "Acceso"],
   ] as const) {
