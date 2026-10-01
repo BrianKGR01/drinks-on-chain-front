@@ -90,9 +90,25 @@ Contrato: `plan/contratos/o1-backoffice-y-bodegas.md` §0 y §3; proceso en `doc
 - [x] Pasos del "Proceso de alta" alineados con el flujo real (solicitud y correo, revisión y reunión, alta e invitación al dueño, equipo y primer lote) · 27-09-2026
 - [x] e2e `e2e/unirse.spec.ts` con la API interceptada (éxito, 422 por campo, 429, red, sin API, verificación válida e inválida, campo trampa, teclado) y axe sin violaciones serias · 27-09-2026
 - [x] IP real del cliente detrás del proxy (O1-OPS-1): `rewrites` sustituidos por `src/proxy.ts`, que reescribe `/api/v1/*` a `${API_ORIGIN}/v1/*` con `X-DOC-Client-IP` firmada (HMAC con `PROXY_SHARED_SECRET`, variable de servidor); pruebas en `e2e/api-proxy.spec.ts` · 27-09-2026
-- [ ] Variables en el proyecto de Vercel (las crea la coordinación): `API_ORIGIN`, `PROXY_SHARED_SECRET` y `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
+- [ ] Variables en el proyecto de Vercel (las crea la coordinación): `API_ORIGIN` y `PROXY_SHARED_SECRET` creadas el 01-10-2026 según la coordinación; falta `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
 - [ ] Prueba contra el backend real (pista E2E, cuando la parte B del backend esté desplegada)
 - [ ] Postulación de puntos de canje por formulario (sin contrato todavía; hoy `?tipo=punto` ofrece el correo)
+
+## O1B-WEB · Lista de espera de bodegas (01-10-2026)
+
+Contrato: `plan/contratos/o1b-lista-de-espera.md`; plan: `plan/lista-de-espera.md`. Decisión del usuario (01-10): la lista de espera sustituye por ahora a la solicitud formal de `/unirse`, que en producción no puede enviar porque aún no hay correo para verificar.
+
+- [x] `/lista-de-espera` (ES/EN, metadatos, imagen para compartir propia y sitemap): titular para bodegas y productores, tres beneficios y el formulario (bodega, región de `src/content` + "Otra región de Bolivia", qué produce, persona de contacto, correo, WhatsApp, mensaje opcional, consentimiento con texto de privacidad, campo trampa `website`); `POST /api/v1/public/waitlist` con `type: "WINERY"`, `locale` y `source` · 01-10-2026
+- [x] `?src=` → `source`: validado `[a-z0-9-]{1,40}` (en minúsculas), guardado en `sessionStorage` y descartado si no es válido · 01-10-2026
+- [x] Respuestas: 201 → "Tu bodega está en la lista" con el número de orden y qué pasa después; 422 marcado en su campo; 429 con el tiempo de `Retry-After`; error de red; API caída; aviso y botón desactivado si el sitio se compiló sin `API_ORIGIN`; foco al primer error y al resultado · 01-10-2026
+- [x] Compartir con otra bodega: Web Share donde existe; si no, WhatsApp; siempre "Copiar el enlace"; el enlace lleva `?src=bodega-amiga` · 01-10-2026
+- [x] `/unirse`: conserva la propuesta e incrusta la lista de espera (pasos del proceso adaptados); `?tipo=punto` sigue igual. La solicitud formal (`JoinForm`, `/unirse/verificar`) queda detrás de `NEXT_PUBLIC_FLAG_WINERY_APPLICATION=1`, con su código y sus pruebas intactos · 01-10-2026
+- [x] "Unirse" en el menú, el pie, `/acceso` y `/bodegas` lleva a `/lista-de-espera` (a `/unirse` con la bandera) · 01-10-2026
+- [x] Móvil primero: cómodo en 360 px (sin desbordes, texto de los campos ≥ 16 px, controles ≥ 44 px, teclados de correo y teléfono, botón a todo el ancho); la barrera de edad solo existe en el mapa y no aparece al llegar en frío desde el QR · 01-10-2026
+- [x] e2e en tres builds (`pnpm e2e`): lista (por defecto), solicitud (bandera activa) y sin `API_ORIGIN`; axe sin violaciones serias en la página, con errores, en la confirmación y en `/unirse` · 01-10-2026
+- [ ] Captcha real en la lista de espera (el contrato lo deja apagado; cuando existan las claves de Turnstile y `WAITLIST_CAPTCHA_REQUIRED=true`, el formulario debe enviar `captchaToken`)
+- [ ] Contador "ya somos N" (`GET /v1/public/waitlist/stats`): no se muestra en este sitio; decidir si conviene cuando haya bodegas anotadas
+- [ ] Prueba real de punta a punta en producción y códigos QR con `?src=tarija-2026` (coordinación)
 
 ## Mediciones (Lighthouse 12, móvil, build de producción local, 25-09-2026)
 
