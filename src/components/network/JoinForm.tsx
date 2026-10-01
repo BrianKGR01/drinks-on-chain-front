@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useId, useRef, useState, type FormEvent, type InputHTMLAttributes } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent, type InputHTMLAttributes, type ReactNode } from "react";
 import { VILLAGES } from "@/content/villages";
 import { postPublic, TURNSTILE_SITE_KEY } from "@/lib/public-api";
 import type { Lang } from "@/lib/scene-contract";
@@ -157,6 +157,12 @@ interface JoinFormProps {
   privacyHref: string;
   /** False when the site has no API behind `/api/v1` (`API_ORIGIN` unset): the form says so instead of failing. */
   apiReady: boolean;
+  /**
+   * Shown to wineries instead of the formal application while it is off
+   * (`WINERY_APPLICATION` in src/lib/flags.ts): the waitlist. The choice
+   * between winery and redemption point stays.
+   */
+  winerySlot?: ReactNode;
 }
 
 /**
@@ -166,7 +172,7 @@ interface JoinFormProps {
  * rules (NIT, duplicates, limits). The client only checks what a person can
  * fix before sending: required fields and the shape of the email.
  */
-export function JoinForm({ lang, privacyHref, apiReady }: JoinFormProps) {
+export function JoinForm({ lang, privacyHref, apiReady, winerySlot }: JoinFormProps) {
   const c = COPY[lang];
   const params = useSearchParams();
   const [kind, setKind] = useState<Kind>(params.get("tipo") === "punto" ? "punto" : "bodega");
@@ -332,6 +338,15 @@ export function JoinForm({ lang, privacyHref, apiReady }: JoinFormProps) {
             {MAIL.punto}
           </a>
         </p>
+      </div>
+    );
+  }
+
+  if (winerySlot) {
+    return (
+      <div id="formulario" className={styles.formWrap}>
+        {kindChoice}
+        {winerySlot}
       </div>
     );
   }

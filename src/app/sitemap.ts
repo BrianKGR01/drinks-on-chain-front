@@ -9,6 +9,7 @@ const STATIC: { path: string; changeFrequency: Freq; priority: number }[] = [
   { path: "/", changeFrequency: "weekly", priority: 1 },
   { path: "/bodegas", changeFrequency: "weekly", priority: 0.9 },
   { path: "/puntos-de-recojo", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/lista-de-espera", changeFrequency: "weekly", priority: 0.9 },
   { path: "/unirse", changeFrequency: "monthly", priority: 0.8 },
   { path: "/acceso", changeFrequency: "monthly", priority: 0.6 },
   { path: "/historia", changeFrequency: "monthly", priority: 0.6 },

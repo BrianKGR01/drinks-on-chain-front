@@ -4,6 +4,8 @@ import { seriousViolations, settle, trackErrors } from "./support";
 // O1-WEB-1: the winery application of /unirse and the email check of
 // /unirse/verificar. The API is intercepted in the browser (page.route);
 // the run against the real backend belongs to the E2E track.
+// Build: NEXT_PUBLIC_FLAG_WINERY_APPLICATION=1 (playwright.solicitud.config.ts);
+// without the flag the waitlist takes the place of this form (lista-de-espera.spec.ts).
 
 const APPLY = "**/api/v1/public/winery-applications";
 const VERIFY = "**/api/v1/public/winery-applications/verify";
@@ -226,6 +228,24 @@ test.describe("/unirse · solicitud de alta", () => {
     await submit(page);
     await expect(page.getByRole("heading", { name: "Revisa tu correo" })).toBeVisible();
     expect(await seriousViolations(page)).toEqual([]);
+  });
+});
+
+test.describe("con la solicitud formal activa", () => {
+  test("el menú, /acceso y el pie llevan a /unirse; la lista de espera sigue publicada", async ({ page }) => {
+    await page.goto("/acceso");
+    await expect(page.locator("#erp").getByRole("link", { name: "Unirse" })).toHaveAttribute("href", "/unirse");
+    await expect(page.getByRole("contentinfo").getByRole("link", { name: "Unirse", exact: true })).toHaveAttribute("href", "/unirse");
+    await page.getByRole("button", { name: "MENU" }).click();
+    await page.getByRole("dialog", { name: "MENU" }).getByRole("link", { name: "Unirse", exact: true }).click();
+    await expect(page).toHaveURL("/unirse");
+    // The steps are those of the formal application, not of the waitlist.
+    await expect(page.getByRole("heading", { name: "Solicitud", exact: true })).toBeVisible();
+    await expect(page.getByLabel("Nombre de la bodega")).toHaveCount(0);
+
+    await page.goto("/lista-de-espera");
+    await expect(page.getByRole("heading", { name: "Tu bodega, entre las primeras de la red" })).toBeVisible();
+    await expect(page.getByLabel("Nombre de la bodega")).toBeVisible();
   });
 });
 
