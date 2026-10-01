@@ -1,0 +1,80 @@
+/* Waitlist of wineries (/lista-de-espera and the form embedded in /unirse).
+   Phone first: visitors arrive from a QR at an event. Builds on
+   Network.module.css; only what the waitlist adds lives here. Motion is
+   transform and opacity only, and off with prefers-reduced-motion. */
+
+/* Page ---------------------------------------------------------------- */
+/* element + class: these win over Network.module.css whatever the order of the two files in the bundle */
+header.header { padding-top: 4rem; }
+p.cta { margin-top: 3rem; }
+section.section { margin-top: 6rem; }
+.more {
+  max-width: max(44rem, 616px);
+  margin: 3rem auto 0;
+  text-align: center;
+  font-size: max(1.0625rem, 14.9px);
+  line-height: 2;
+  color: var(--ink-soft);
+}
+/* the link never breaks in the middle */
+.more a { display: inline-block; line-height: 1.5; }
+@media (max-width: 767px) {
+  /* the form must be close to the first screen */
+  header.header { padding-top: 1.25rem; }
+  header.header :global(.small-heading) { line-height: 1.9; text-align: center; }
+  header.header :global(.heading-separator) { height: 1.25rem; margin: 0.9rem auto 1.25rem; }
+  p.cta { margin-top: 1.75rem; }
+  section.section { margin-top: 3.5rem; }
+}
+
+/* Form ---------------------------------------------------------------- */
+/* 16px floor: iOS zooms the page when a focused control has smaller text */
+input.control, select.control { min-height: 3rem; font-size: max(1.0625rem, 16px); }
+textarea.message { min-height: 6.5rem; font-size: max(1.0625rem, 16px); }
+.hint { font-size: max(0.875rem, 12.2px); line-height: 1.5; color: var(--muted); margin: 0; }
+p.notReady { margin: 0 0 2.5rem; }
+
+fieldset.produces { grid-column: 1 / -1; gap: 0.25rem 2rem; }
+fieldset.produces label { min-height: 2.75rem; font-size: max(1.0625rem, 16px); }
+fieldset.produces input { width: 1.35rem; height: 1.35rem; flex-shrink: 0; }
+/* the error takes its own line under the options */
+.produces > p { flex-basis: 100%; }
+
+label.consent { gap: 0.9rem; font-size: max(1rem, 14px); cursor: pointer; }
+label.consent input { width: 1.5rem; height: 1.5rem; flex-shrink: 0; margin-top: 0.1rem; }
+
+div.foot { margin-top: 0.5rem; }
+@media (max-width: 767px) {
+  button.submit { width: 100%; min-height: 3.5rem; }
+}
+
+/* Confirmation -------------------------------------------------------- */
+.done { animation: rise 0.6s var(--ease-out) both; }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(0.5rem); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .done { animation: none; }
+}
+.position { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin: 1.5rem 0 1.75rem; }
+.positionLabel {
+  font-family: var(--font-display);
+  font-size: max(0.8125rem, 11.4px);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.positionNumber {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: max(4rem, 56px);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--accent-deep);
+}
+.share { margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--hairline-2); }
+.shareActions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1.25rem 2rem; margin-top: 1.25rem; }
+.shareActions button { cursor: pointer; }
+.done .shareNote { min-height: 1.6em; margin-top: 1rem; overflow-wrap: anywhere; }
+.done .again { margin-top: 1.5rem; }

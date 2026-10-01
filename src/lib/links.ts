@@ -24,5 +24,8 @@ export const LINKS = {
   pos: POS ? join(POS) : null,
 } as const;
 
+/** WhatsApp share intent with a prefilled text (the visitor chooses the chat). */
+export const whatsappShare = (text: string) => `https://wa.me/?text=${encodeURIComponent(text)}`;
+
 /** True when a link leaves this site (render a plain <a>, not next/link). */
 export const isExternal = (href: string) => /^https?:\/\//.test(href);
