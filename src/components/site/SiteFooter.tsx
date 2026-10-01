@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
 import { UI } from "@/content/i18n";
+import { JOIN_HREF } from "@/lib/flags";
 import { LINKS } from "@/lib/links";
 import { useExperience } from "@/store/experience";
 import styles from "./SiteFooter.module.css";
@@ -31,7 +32,7 @@ export function SiteFooter() {
         </nav>
         <nav className={styles.col} aria-label={t.footerNetwork}>
           <h2>{t.footerNetwork}</h2>
-          <Link href="/unirse" className="underline-anim">{t.navJoin}</Link>
+          <Link href={JOIN_HREF} className="underline-anim">{t.navJoin}</Link>
           <Link href="/acceso" className="underline-anim">{t.navAccess}</Link>
           <Link href="/contacto" className="underline-anim">{t.navContact}</Link>
           <a href={LINKS.landing} className="underline-anim">{t.footerConsumers}</a>

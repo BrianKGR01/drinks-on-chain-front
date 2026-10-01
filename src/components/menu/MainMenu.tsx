@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/brand/Logo";
 import { LANGS, UI } from "@/content/i18n";
+import { JOIN_HREF } from "@/lib/flags";
 import { LINKS } from "@/lib/links";
 import { useExperience } from "@/store/experience";
 import styles from "./MainMenu.module.css";
@@ -26,11 +27,12 @@ export function MainMenu() {
   const t = UI[lang];
   const [hover, setHover] = useState<number | null>(null);
 
-  const items = [
+  // "Unirse" leads to the waitlist while the formal application is off; both pages belong to it.
+  const items: { href: string; label: string; also?: string[] }[] = [
     { href: "/", label: t.navMap },
     { href: "/bodegas", label: t.navWineries },
     { href: "/puntos-de-recojo", label: t.navPickup },
-    { href: "/unirse", label: t.navJoin },
+    { href: JOIN_HREF, label: t.navJoin, also: ["/unirse", "/lista-de-espera"] },
     { href: "/acceso", label: t.navAccess },
   ];
 
@@ -51,7 +53,7 @@ export function MainMenu() {
     toggleMenu(false);
   }, [pathname, toggleMenu]);
 
-  const currentIndex = items.findIndex((it) => (it.href === "/" ? pathname === "/" : pathname.startsWith(it.href)));
+  const currentIndex = items.findIndex((it) => (it.href === "/" ? pathname === "/" : [it.href, ...(it.also ?? [])].some((p) => pathname.startsWith(p))));
   const indicatorIndex = hover ?? (currentIndex >= 0 ? currentIndex : 0);
 
   return (

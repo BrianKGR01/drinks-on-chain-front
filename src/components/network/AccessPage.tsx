@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { DiscoverFooter } from "@/components/pages/DiscoverFooter";
 import { PageShell } from "@/components/pages/PageShell";
 import { UI } from "@/content/i18n";
+import { JOIN_HREF } from "@/lib/flags";
 import { LINKS } from "@/lib/links";
 import { useExperience } from "@/store/experience";
 import styles from "./Network.module.css";
@@ -139,7 +140,7 @@ export function AccessPage() {
       </header>
 
       <div className={styles.doors}>
-        {door("erp", c.erp, ICON_WINERY, LINKS.erp, "/unirse")}
+        {door("erp", c.erp, ICON_WINERY, LINKS.erp, JOIN_HREF)}
         {door("pos", c.pos, ICON_COUNTER, LINKS.pos, "/puntos-de-recojo")}
       </div>
 
@@ -150,7 +151,7 @@ export function AccessPage() {
         </a>
       </p>
 
-      <DiscoverFooter href="/unirse" caption={c.next} prepend={t.discover} />
+      <DiscoverFooter href={JOIN_HREF} caption={c.next} prepend={t.discover} />
     </PageShell>
   );
 }
