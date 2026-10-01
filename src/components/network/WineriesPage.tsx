@@ -5,6 +5,7 @@ import { DiscoverFooter } from "@/components/pages/DiscoverFooter";
 import { PageShell } from "@/components/pages/PageShell";
 import { UI } from "@/content/i18n";
 import { NETWORK_COPY, WINERIES, getWineryVillage, type WineryStatus } from "@/content/network";
+import { JOIN_HREF } from "@/lib/flags";
 import { useExperience } from "@/store/experience";
 import { NetworkMap } from "./NetworkMap";
 import styles from "./Network.module.css";
@@ -95,7 +96,7 @@ export function WineriesPage() {
         </ul>
         <div className={styles.center}>
           <span className={styles.doorAlt}>{c.join}</span>
-          <Link href="/unirse" className={styles.button}>
+          <Link href={JOIN_HREF} className={styles.button}>
             {c.joinCta}
           </Link>
         </div>

@@ -4,10 +4,12 @@ import { Suspense } from "react";
 import { DiscoverFooter } from "@/components/pages/DiscoverFooter";
 import { PageShell } from "@/components/pages/PageShell";
 import { UI } from "@/content/i18n";
+import { WINERY_APPLICATION } from "@/lib/flags";
 import { LINKS } from "@/lib/links";
 import { useExperience } from "@/store/experience";
 import { JoinForm } from "./JoinForm";
 import styles from "./Network.module.css";
+import { WaitlistForm } from "./WaitlistForm";
 
 const COPY = {
   es: {
@@ -45,6 +47,14 @@ const COPY = {
       { h: "Equipo y primer lote", p: "Aceptas la invitación, invitas a tu equipo y registras tu primer lote desde la parcela." },
     ],
     formEyebrow: "Solicitud de alta",
+    // While the formal application is off (src/lib/flags.ts) the waitlist takes its place.
+    waitlistSteps: [
+      { h: "Lista de espera", p: "Anotas tu bodega con este formulario: dos minutos, sin compromiso." },
+      { h: "Conversación", p: "El equipo de Drinks on Chain se pone en contacto contigo para conocer la bodega; si hace falta, con una llamada o una visita." },
+      { h: "Alta en la red", p: "Damos de alta la bodega y su dueño recibe la invitación al ERP; no tienes que manejar criptomonedas." },
+      { h: "Equipo y primer lote", p: "Aceptas la invitación, invitas a tu equipo y registras tu primer lote desde la parcela." },
+    ],
+    waitlistEyebrow: "Lista de espera",
     next: "Puntos de canje",
   },
   en: {
@@ -82,15 +92,27 @@ const COPY = {
       { h: "Team and first lot", p: "You accept the invitation, invite your team and record your first lot from the parcel." },
     ],
     formEyebrow: "Apply to join",
+    waitlistSteps: [
+      { h: "Waitlist", p: "You add your winery with this form: two minutes, no commitment." },
+      { h: "Conversation", p: "The Drinks on Chain team gets in touch to get to know the winery; if needed, with a call or a visit." },
+      { h: "Onboarding", p: "We register the winery and its owner receives the ERP invitation; you do not need to handle cryptocurrency." },
+      { h: "Team and first lot", p: "You accept the invitation, invite your team and record your first lot from the parcel." },
+    ],
+    waitlistEyebrow: "Waitlist",
     next: "Redemption points",
   },
 } as const;
 
-/** /unirse — proposal for wineries and the application form (O1-WEB-1). */
+/**
+ * /unirse — proposal for wineries, then the way in: the waitlist, or the
+ * formal application form (O1-WEB-1) when `WINERY_APPLICATION` is on.
+ */
 export function JoinPage({ apiReady }: { apiReady: boolean }) {
   const lang = useExperience((s) => s.lang);
   const c = COPY[lang];
   const t = UI[lang];
+  const steps = WINERY_APPLICATION ? c.steps : c.waitlistSteps;
+  const formEyebrow = WINERY_APPLICATION ? c.formEyebrow : c.waitlistEyebrow;
 
   return (
     <PageShell eyebrow={c.title}>
@@ -101,7 +123,7 @@ export function JoinPage({ apiReady }: { apiReady: boolean }) {
         <p className={styles.lead}>{c.lead}</p>
         <p className={styles.center} style={{ marginTop: "3rem" }}>
           <a href="#formulario" className={styles.button}>
-            {c.formEyebrow}
+            {formEyebrow}
           </a>
         </p>
       </header>
@@ -153,7 +175,7 @@ export function JoinPage({ apiReady }: { apiReady: boolean }) {
           <p id="join-steps" className="small-heading">{c.stepsEyebrow}</p>
         </header>
         <ol className={`${styles.grid} ${styles.numbered} ${styles.cols4}`}>
-          {c.steps.map((w) => (
+          {steps.map((w) => (
             <li key={w.h}>
               <h3>{w.h}</h3>
               <p>{w.p}</p>
@@ -164,11 +186,16 @@ export function JoinPage({ apiReady }: { apiReady: boolean }) {
 
       <section className={styles.section} aria-labelledby="join-form">
         <header className={styles.sectionHead}>
-          <p id="join-form" className="small-heading">{c.formEyebrow}</p>
+          <p id="join-form" className="small-heading">{formEyebrow}</p>
         </header>
         {/* useSearchParams (?tipo=punto) needs a Suspense boundary to keep the page static */}
         <Suspense fallback={null}>
-          <JoinForm lang={lang} privacyHref={LINKS.landingPrivacy} apiReady={apiReady} />
+          <JoinForm
+            lang={lang}
+            privacyHref={LINKS.landingPrivacy}
+            apiReady={apiReady}
+            winerySlot={WINERY_APPLICATION ? undefined : <WaitlistForm lang={lang} privacyHref={LINKS.landingPrivacy} apiReady={apiReady} />}
+          />
         </Suspense>
       </section>
 
