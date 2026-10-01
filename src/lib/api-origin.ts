@@ -1,9 +1,10 @@
 /**
  * Origin of the backend API, read on the server only (`API_ORIGIN`, never
- * `NEXT_PUBLIC_…`). The browser never talks to it directly: `next.config.ts`
- * rewrites `/api/v1/*` of this site to `${API_ORIGIN}/v1/*` (plan/03 §6, P-1),
- * so every request stays same-origin. Without a valid value there is no
- * rewrite and the public forms say that sending is not available.
+ * `NEXT_PUBLIC_…`). The browser never talks to it directly: `src/proxy.ts`
+ * rewrites `/api/v1/*` of this site to `${API_ORIGIN}/v1/*` with the client's
+ * IP signed (plan/03 §6, P-1; O1-OPS-1), so every request stays same-origin.
+ * Without a valid value there is no rewrite and the public forms say that
+ * sending is not available.
  *
  * Kept dependency-free: `next.config.ts` imports it.
  */
