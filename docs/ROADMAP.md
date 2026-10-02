@@ -110,6 +110,19 @@ Contrato: `plan/contratos/o1b-lista-de-espera.md`; plan: `plan/lista-de-espera.m
 - [ ] Contador "ya somos N" (`GET /v1/public/waitlist/stats`): no se muestra en este sitio; decidir si conviene cuando haya bodegas anotadas
 - [ ] Prueba real de punta a punta en producción y códigos QR con `?src=tarija-2026` (coordinación)
 
+## O2-WEB-1 · Enlaces al Marketplace y perfiles públicos de bodega (02-10-2026)
+
+Contrato: `plan/contratos/o2-erp-confiable.md` §12 y §17; catálogo: ORG-11.
+
+- [x] `links.ts`: `app`, `catalog`, `verify` (`/b`), `appWineries` y `appWinery(slug)` desde `NEXT_PUBLIC_URL_APP`; sin la variable en producción valen `null` y no se muestra ningún enlace al Marketplace · 02-10-2026
+- [x] "Marketplace" y "Verifica una botella" en el pie; "Verifica una botella" en el menú y en `/acceso` (ES/EN) · 02-10-2026
+- [x] `/bodegas`: perfiles públicos desde `GET /api/v1/public/wineries` (proxy firmado, validación con zod en un fragmento aparte, respuesta reutilizada 5 minutos) unidos por `slug` con `src/content`, que queda de respaldo si la API falla, tarda, viene vacía o no hay `API_ORIGIN` · 02-10-2026
+- [x] Cada socia enlaza a su página del Marketplace (`/bodegas/{slug}`) cuando existe la variable; la ficha de la bodega añade ese enlace y el sitio web del perfil · 02-10-2026
+- [x] Pruebas: lógica pura (`links.spec.ts`, `winery-directory.spec.ts`) y navegador con la API interceptada (`bodegas.spec.ts`, `sin-marketplace.spec.ts`, `sin-api.spec.ts`), con y sin `NEXT_PUBLIC_URL_APP`; axe sin violaciones serias · 02-10-2026
+- [ ] `NEXT_PUBLIC_URL_APP` en el proyecto de Vercel cuando el Marketplace tenga URL pública (la crea la coordinación)
+- [ ] Logos de las bodegas: falta saber el host de las subidas para admitirlo en la CSP (`img-src`); los de desarrollo apuntan a `/mocks/uploads/…`
+- [ ] Ficha `/bodegas/[slug]` de una bodega que solo conoce la API (hoy enlaza al Marketplace) y mapa WebGL con las socias de la API: la API no da valle, sede ni parcelas
+
 ## Mediciones (Lighthouse 12, móvil, build de producción local, 25-09-2026)
 
 | Página | Rendimiento | Accesibilidad | Buenas prácticas | SEO |

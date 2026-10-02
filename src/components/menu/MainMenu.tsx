@@ -132,6 +132,12 @@ export function MainMenu() {
           <a href={LINKS.landing} className="underline-anim">
             {t.footerConsumers} →
           </a>
+          {/* Shown only when the Marketplace has a public URL (NEXT_PUBLIC_URL_APP). */}
+          {LINKS.verify ? (
+            <a href={LINKS.verify} className="underline-anim">
+              {t.verifyBottle} →
+            </a>
+          ) : null}
         </div>
         <p className={styles.made}>{t.madeBy}</p>
       </footer>

@@ -35,6 +35,7 @@ const COPY = {
     soon: "Disponible pronto",
     consumer: "¿Buscas tus botellas o tu cava? La cuenta de los consumidores está en el sitio principal.",
     consumerCta: "Ir a Drinks on Chain",
+    verify: "¿Tienes una botella en la mano? Su código cuenta de dónde viene.",
     next: "Unirse a la red",
   },
   en: {
@@ -61,6 +62,7 @@ const COPY = {
     soon: "Coming soon",
     consumer: "Looking for your bottles or your cellar? Consumer accounts live on the main site.",
     consumerCta: "Go to Drinks on Chain",
+    verify: "Holding a bottle? Its code tells where it comes from.",
     next: "Join the network",
   },
 } as const;
@@ -149,6 +151,15 @@ export function AccessPage() {
         <a href={LINKS.landing} className={styles.textLink}>
           {c.consumerCta}
         </a>
+        {/* Only when the Marketplace has a public URL (NEXT_PUBLIC_URL_APP). */}
+        {LINKS.verify ? (
+          <span className={styles.asideLine}>
+            {c.verify}{" "}
+            <a href={LINKS.verify} className={styles.textLink}>
+              {t.verifyBottle}
+            </a>
+          </span>
+        ) : null}
       </p>
 
       <DiscoverFooter href={JOIN_HREF} caption={c.next} prepend={t.discover} />

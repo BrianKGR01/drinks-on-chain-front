@@ -1,5 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import type { Page } from "@playwright/test";
+import type { Page, Route } from "@playwright/test";
 
 /**
  * Console errors, uncaught exceptions and failed requests of this site.
@@ -49,4 +49,59 @@ export async function enter(page: Page) {
 export async function settle(page: Page, ms = 2000) {
   await page.waitForLoadState("networkidle");
   await page.waitForTimeout(ms);
+}
+
+/* Directory of wineries of the API (`GET /api/v1/public/wineries`), intercepted in the browser. */
+
+export const DIRECTORY_ROUTE = "**/api/v1/public/wineries?*";
+
+export interface ProfileBody {
+  slug: string;
+  tradeName: string;
+  region: string;
+  category: string;
+  logoUrl: string | null;
+  publicStory: string | null;
+  website: string | null;
+}
+
+/** What the development API answers today for the two partners of `src/content` (logos and sites that lead nowhere). */
+export const API_PARTNERS: ProfileBody[] = [
+  {
+    slug: "altos-de-calamuchita",
+    tradeName: "Bodega Altos de Calamuchita",
+    region: "Valle Central de Tarija · Santa Ana",
+    category: "WINERY",
+    logoUrl: "/mocks/uploads/logos/altos.png",
+    publicStory: "Bodega familiar en las lomas de Santa Ana, con viñedos en Santa Ana la Nueva y Calamuchita. Registra cada lote en el ERP desde la vendimia.",
+    website: "https://altos.test",
+  },
+  {
+    slug: "destileria-cinti-viejo",
+    tradeName: "Destilería Cinti Viejo",
+    region: "Valle de Cinti · Camargo",
+    category: "DISTILLERY",
+    logoUrl: "/mocks/uploads/logos/cintiviejo.png",
+    publicStory: "Destilería del cañón de Cinti, con parrales de Moscatel de Alejandría en Camargo y Palca Grande.",
+    website: "https://cintiviejo.test",
+  },
+];
+
+/** The API's envelope around a page of the directory. */
+export const directoryBody = (items: unknown[]) => ({
+  success: true,
+  statusCode: 200,
+  timestamp: "2026-10-02T12:00:00.000Z",
+  path: "/v1/public/wineries",
+  data: { items, total: items.length, limit: 100, offset: 0 },
+});
+
+/** Answers the directory with these profiles (default: the partners of `src/content`). Returns the requests seen. */
+export async function mockDirectory(page: Page, items: unknown[] = API_PARTNERS) {
+  const calls: { url: string; headers: Record<string, string> }[] = [];
+  await page.route(DIRECTORY_ROUTE, async (route: Route) => {
+    calls.push({ url: route.request().url(), headers: route.request().headers() });
+    await route.fulfill({ status: 200, contentType: "application/json; charset=utf-8", body: JSON.stringify(directoryBody(items)) });
+  });
+  return calls;
 }
