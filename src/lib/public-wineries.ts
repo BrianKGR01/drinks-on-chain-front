@@ -1,37 +1,16 @@
-import * as z from "zod/mini";
-
 /**
  * Public profiles of the wineries of the network (ORG-11): `GET /v1/public/wineries`
  * (only `ACTIVE` wineries, by trade name) read through this site's own `/api/v1` proxy
  * (`src/proxy.ts`), like every other call of the browser to the API.
  *
- * The answer is validated before it reaches the page: a profile that does not match
- * the contract is dropped, and when nothing usable is left the caller keeps the
- * directory of `src/content` (see `winery-directory.ts`). The page never waits for
- * the API and never breaks because of it.
- *
- * `zod/mini` on purpose: this module ships to the browser.
+ * The answer is validated before it reaches the page (`public-wineries-schema.ts`):
+ * a profile that does not match the contract is dropped, and when nothing usable is
+ * left the caller keeps the directory of `src/content` (see `winery-directory.ts`).
+ * The page never waits for the API and never breaks because of it.
  */
 
 export const WINERY_CATEGORIES = ["WINERY", "BREWERY", "DISTILLERY", "OTHER"] as const;
 export type WineryCategory = (typeof WINERY_CATEGORIES)[number];
-
-/** `PublicWineryProfileDto` of the backend's OpenAPI. */
-const ProfileSchema = z.object({
-  slug: z.string().check(z.regex(/^[a-z0-9][a-z0-9-]{0,119}$/)),
-  tradeName: z.string().check(z.trim(), z.minLength(1), z.maxLength(200)),
-  region: z.string(),
-  category: z.string(),
-  logoUrl: z.nullish(z.string()),
-  publicStory: z.nullish(z.string()),
-  website: z.nullish(z.string()),
-});
-
-/** Page of the directory inside the API envelope (`{ success, data }`). */
-const EnvelopeSchema = z.object({
-  success: z.literal(true),
-  data: z.object({ items: z.array(z.unknown()) }),
-});
 
 /** A profile as the pages use it: validated, trimmed, with only the links that lead somewhere. */
 export interface PublicWinery {
@@ -83,42 +62,6 @@ export function usableWebsite(raw: string | null | undefined): string | null {
   }
 }
 
-const isCategory = (value: string): value is WineryCategory => (WINERY_CATEGORIES as readonly string[]).includes(value);
-
-/** One item of the directory, or null when it does not match the contract. */
-export function parseProfile(raw: unknown): PublicWinery | null {
-  const parsed = ProfileSchema.safeParse(raw);
-  if (!parsed.success) return null;
-  const p = parsed.data;
-  return {
-    slug: p.slug,
-    tradeName: p.tradeName,
-    region: p.region.trim(),
-    category: isCategory(p.category) ? p.category : null,
-    logoUrl: usableLogoUrl(p.logoUrl),
-    story: p.publicStory?.trim() || null,
-    website: usableWebsite(p.website),
-  };
-}
-
-/**
- * Profiles of an answer of `GET /v1/public/wineries`, or null when the answer is not
- * the API's envelope or holds no usable profile (an empty network included): null
- * means "keep the directory of `src/content`". Invalid and repeated items are dropped.
- */
-export function parseDirectory(body: unknown): PublicWinery[] | null {
-  const envelope = EnvelopeSchema.safeParse(body);
-  if (!envelope.success) return null;
-  const seen = new Set<string>();
-  const profiles = envelope.data.data.items.flatMap((item) => {
-    const profile = parseProfile(item);
-    if (!profile || seen.has(profile.slug)) return [];
-    seen.add(profile.slug);
-    return [profile];
-  });
-  return profiles.length > 0 ? profiles : null;
-}
-
 /** The network of the MVP fits in one page (the API allows up to 100). */
 export const DIRECTORY_PATH = "/api/v1/public/wineries?limit=100&offset=0";
 /** A slow API is the same as no API: the page already shows the directory of `src/content`. */
@@ -135,6 +78,8 @@ export async function fetchDirectory(fetcher: Fetcher = fetch): Promise<PublicWi
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
     if (!res.ok) return null;
+    // The schema (zod) is its own chunk, asked for only here: it never weighs on the first load of a page.
+    const { parseDirectory } = await import("./public-wineries-schema");
     return parseDirectory(await res.json());
   } catch {
     return null;
