@@ -18,6 +18,7 @@ import {
 } from "@/content/network";
 import type { Lang } from "@/lib/scene-contract";
 import { LINKS } from "@/lib/links";
+import { usePublicWineries } from "@/lib/use-public-wineries";
 import { useExperience } from "@/store/experience";
 import { NetworkMap } from "./NetworkMap";
 import { StatusBadge } from "./WineriesPage";
@@ -45,6 +46,8 @@ const COPY = {
     erp: "Acceso al ERP",
     erpText: "El equipo de la bodega registra sus lotes en el ERP de trazabilidad.",
     buy: "Ver vinos en Drinks on Chain",
+    market: "Ver la bodega en el Marketplace",
+    website: "Sitio web",
     back: "Todas las bodegas",
   },
   en: {
@@ -68,6 +71,8 @@ const COPY = {
     erp: "ERP access",
     erpText: "The winery's team records its lots in the traceability ERP.",
     buy: "See wines on Drinks on Chain",
+    market: "See the winery on the Marketplace",
+    website: "Website",
     back: "All wineries",
   },
 } as const;
@@ -97,8 +102,20 @@ function LotTimeline({ lot, kind, lang }: { lot: Lot; kind: "vino" | "singani"; 
   );
 }
 
-/** /bodegas/[slug] — profile of one winery: story, parcels on the map, products, lots, pick-up points. */
-export function WineryPage({ winery: w }: { winery: Winery }) {
+/**
+ * /bodegas/[slug] — profile of one winery: story, parcels on the map, products, lots, pick-up points.
+ *
+ * The page is `src/content`; the public profile of the API (ORG-11) only adds what it
+ * knows better: whether the winery is active today (its Marketplace page exists only
+ * then) and its website.
+ */
+export function WineryPage({ winery: w, apiReady }: { winery: Winery; apiReady: boolean }) {
+  const profiles = usePublicWineries(apiReady);
+  const profile = profiles?.find((p) => p.slug === w.slug) ?? null;
+  // With an answer of the API, the API says whether the winery is a partner; without one, src/content does.
+  const partner = profiles ? profile !== null : w.status === "socia";
+  const market = partner ? LINKS.appWinery(w.slug) : null;
+  const website = profile?.website ?? null;
   const lang = useExperience((s) => s.lang);
   const c = COPY[lang];
   const n = NETWORK_COPY[lang];
@@ -156,6 +173,16 @@ export function WineryPage({ winery: w }: { winery: Winery }) {
             <dd>{w.town}</dd>
             <dt>{c.varieties}</dt>
             <dd>{w.varieties.join(" · ")}</dd>
+            {website ? (
+              <>
+                <dt>{c.website}</dt>
+                <dd>
+                  <a href={website} className={styles.factLink} rel="noopener noreferrer">
+                    {new URL(website).hostname.replace(/^www\./, "")}
+                  </a>
+                </dd>
+              </>
+            ) : null}
             <dt>{c.parcels}</dt>
             <dd className={styles.parcelLinks}>
               {parcels.map((p) => (
@@ -193,8 +220,9 @@ export function WineryPage({ winery: w }: { winery: Winery }) {
         </ul>
         {w.status === "socia" ? (
           <div className={styles.center}>
-            <a href={LINKS.landingWines} className={styles.textLink}>
-              {c.buy} →
+            {/* The winery's page in the Marketplace when there is one; until then, the wines of the landing. */}
+            <a href={market ?? LINKS.landingWines} className={styles.textLink}>
+              {market ? c.market : c.buy} →
             </a>
           </div>
         ) : null}

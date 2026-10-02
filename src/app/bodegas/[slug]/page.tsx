@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { WineryPage } from "@/components/network/WineryPage";
 import { WINERIES, getWinery } from "@/content/network";
+import { readApiOrigin } from "@/lib/api-origin";
 import { pageMetadata } from "@/lib/site";
 
 export const dynamicParams = false;
@@ -21,5 +22,5 @@ export default async function Page({ params }: PageProps<"/bodegas/[slug]">) {
   const { slug } = await params;
   const winery = getWinery(slug);
   if (!winery) notFound();
-  return <WineryPage winery={winery} />;
+  return <WineryPage winery={winery} apiReady={readApiOrigin() !== null} />;
 }
