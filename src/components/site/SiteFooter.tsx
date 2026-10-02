@@ -36,6 +36,9 @@ export function SiteFooter() {
           <Link href="/acceso" className="underline-anim">{t.navAccess}</Link>
           <Link href="/contacto" className="underline-anim">{t.navContact}</Link>
           <a href={LINKS.landing} className="underline-anim">{t.footerConsumers}</a>
+          {/* The Marketplace has no public URL yet: without NEXT_PUBLIC_URL_APP its links are not shown. */}
+          {LINKS.app ? <a href={LINKS.app} className="underline-anim">{t.marketplace}</a> : null}
+          {LINKS.verify ? <a href={LINKS.verify} className="underline-anim">{t.verifyBottle}</a> : null}
         </nav>
         <nav className={styles.col} aria-label={t.footerLegal}>
           <h2>{t.footerLegal}</h2>
