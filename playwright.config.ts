@@ -1,23 +1,28 @@
 import { defineConfig, devices } from "@playwright/test";
+import { E2E_MARKETPLACE } from "./e2e/env";
 
 // Tests run against the production build (`next build && next start`), never
 // against a `next dev` the user may be running on 3000.
 //
-// Two things are decided when the site is built, so each combination under
+// Three things are decided when the site is built, so each combination under
 // test needs its own build (one after another: they share `.next`):
-//   lista      what production runs: the waitlist takes the place of the formal
-//              application, with an API behind the proxy. Every spec but the two below.
+//   lista      the waitlist takes the place of the formal application, with an API
+//              behind the proxy and a Marketplace to link to (NEXT_PUBLIC_URL_APP).
+//              Every spec but the ones below.
 //   solicitud  NEXT_PUBLIC_FLAG_WINERY_APPLICATION=1: the formal application of
-//              /unirse and /unirse/verificar (e2e/unirse.spec.ts).
-//   sin-api    no API_ORIGIN: the forms say sending is unavailable (e2e/sin-api.spec.ts).
+//              /unirse and /unirse/verificar (e2e/unirse.spec.ts). With an API and
+//              without NEXT_PUBLIC_URL_APP: the directory of the API with no
+//              Marketplace to link to (e2e/sin-marketplace.spec.ts).
+//   sin-api    no API_ORIGIN and no NEXT_PUBLIC_URL_APP: the forms say sending is
+//              unavailable and /bodegas is src/content (e2e/sin-api.spec.ts).
 // `pnpm e2e` runs the three; `pnpm e2e:<variant>` runs one.
 // Each variant has its own port (E2E_PORT, default 3120, plus 10 and 20: the ports right after
 // 3120 belong to the e2e of other repos), so a server left running is never taken for another build.
-type Variant = { offset: number; application: boolean; api: boolean; testMatch?: string[]; testIgnore?: string[] };
+type Variant = { offset: number; application: boolean; api: boolean; marketplace: boolean; testMatch?: string[]; testIgnore?: string[] };
 const VARIANTS = {
-  lista: { offset: 0, application: false, api: true, testIgnore: ["**/unirse.spec.ts", "**/sin-api.spec.ts"] },
-  solicitud: { offset: 10, application: true, api: true, testMatch: ["**/unirse.spec.ts"] },
-  "sin-api": { offset: 20, application: false, api: false, testMatch: ["**/sin-api.spec.ts"] },
+  lista: { offset: 0, application: false, api: true, marketplace: true, testIgnore: ["**/unirse.spec.ts", "**/sin-marketplace.spec.ts", "**/sin-api.spec.ts"] },
+  solicitud: { offset: 10, application: true, api: true, marketplace: false, testMatch: ["**/unirse.spec.ts", "**/sin-marketplace.spec.ts"] },
+  "sin-api": { offset: 20, application: false, api: false, marketplace: false, testMatch: ["**/sin-api.spec.ts"] },
 } satisfies Record<string, Variant>;
 
 // Locally the installed Chrome; in CI the Chromium that Playwright installs.
@@ -57,6 +62,8 @@ export function e2eConfig(variant: keyof typeof VARIANTS) {
         // but it must exist for the forms to offer sending. Empty values win over a local .env file.
         API_ORIGIN: v.api ? (process.env.E2E_API_ORIGIN ?? "http://127.0.0.1:9") : "",
         NEXT_PUBLIC_FLAG_WINERY_APPLICATION: v.application ? "1" : "",
+        // Empty = the production of today: the Marketplace has no public URL and its links are hidden.
+        NEXT_PUBLIC_URL_APP: v.marketplace ? E2E_MARKETPLACE : "",
       },
       url: `http://localhost:${port}`,
       reuseExistingServer: !process.env.CI,
