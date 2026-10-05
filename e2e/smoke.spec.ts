@@ -1,11 +1,17 @@
 import { expect, test } from "@playwright/test";
-import { enter, seriousViolations, settle, trackErrors } from "./support";
+import { enter, mockDirectory, seriousViolations, settle, trackErrors } from "./support";
 
 // Smoke tests of the bodegas site (plan/04 §1, sitios públicos). The WebGL map
 // may not render on a machine without a GPU (CI): these tests check the page
 // and its accessible controls, never the canvas.
 
 const WINERY = "destileria-cinti-viejo";
+
+// /bodegas and the winery pages ask the API for the public profiles: here it answers with the
+// partners of src/content (e2e/bodegas.spec.ts covers the other answers).
+test.beforeEach(async ({ page }) => {
+  await mockDirectory(page);
+});
 
 test.describe("mapa y barrera de edad", () => {
   // the WebGL scene makes these pages slow to settle on machines without a GPU

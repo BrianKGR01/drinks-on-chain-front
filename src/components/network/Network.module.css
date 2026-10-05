@@ -171,6 +171,7 @@
   line-height: 1.6;
   color: var(--ink-soft);
 }
+.asideLine { display: block; margin-top: 1.25rem; }
 @media (max-width: 767px) {
   .doors { grid-template-columns: 1fr; gap: 1.5rem; margin-top: 3rem; }
   .door { padding: 2rem 1.5rem; }
@@ -279,6 +280,12 @@
 /* the whole card is the link target */
 .wineryName a::after { content: ""; position: absolute; inset: 0; }
 .wineryMeta { font-size: max(0.9375rem, 13.1px); color: var(--muted); margin: 0; letter-spacing: 0.03em; }
+/* a winery that only the API lists, in a region that is not on the map: no drawing */
+.wineryCardPlain { grid-template-columns: 1fr; }
+.wineryLinks { display: flex; flex-wrap: wrap; align-items: baseline; gap: 1rem 2rem; }
+/* a second link inside the card: above the name's overlay, with room for a finger */
+.wineryMarket { position: relative; z-index: 1; }
+.wineryMarket::before { content: ""; position: absolute; inset: -0.75rem -0.5rem; }
 .winerySummary { font-size: max(1.0625rem, 14.9px); line-height: 1.55; color: var(--ink-soft); margin: 0; }
 @media (max-width: 1023px) { .wineries { grid-template-columns: 1fr; } }
 @media (max-width: 767px) {
@@ -332,6 +339,8 @@
 .parcelLinks { display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; }
 .parcelLinks a { border-bottom: 1px solid var(--hairline); }
 .parcelLinks a:hover { color: var(--accent-deep); border-color: var(--accent); }
+.factLink { border-bottom: 1px solid var(--hairline); overflow-wrap: anywhere; }
+.factLink:hover { color: var(--accent-deep); border-color: var(--accent); }
 @media (max-width: 1023px) {
   .profile { grid-template-columns: 1fr; gap: 3rem; margin-top: 3rem; }
   .profileMap { position: static; max-width: max(36rem, 504px); }

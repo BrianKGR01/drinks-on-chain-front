@@ -117,7 +117,11 @@
 .langs { display: flex; gap: 1em; min-width: 9.625vw; }
 .sect { display: flex; gap: 2em; }
 .sharing { display: flex; gap: 2.5em; letter-spacing: 0.25em; }
-@media (max-width: 767px) { .sect { flex-wrap: wrap; gap: 1em 1.5em; } }
+@media (max-width: 767px) {
+  .sect { flex-wrap: wrap; gap: 1em 1.5em; }
+  /* two outbound links do not fit on one line of a phone */
+  .sharing { flex-direction: column; gap: 1em; }
+}
 .made {
   font-size: 0.75rem;
   color: var(--muted);

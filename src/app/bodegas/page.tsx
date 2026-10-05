@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { readApiOrigin } from "@/lib/api-origin";
 import { pageMetadata } from "@/lib/site";
 import { WineriesPage } from "@/components/network/WineriesPage";
 
@@ -9,5 +10,6 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function Page() {
-  return <WineriesPage />;
+  // Same check as the `/api/v1` proxy in src/proxy.ts: without an API the directory of src/content is the page.
+  return <WineriesPage apiReady={readApiOrigin() !== null} />;
 }
